@@ -1,0 +1,6 @@
+log/*
+*.gem
+.bundle
+Gemfile.lock
+pkg/*
+specs.watchr
