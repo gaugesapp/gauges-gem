@@ -34,6 +34,10 @@ class Gauges
     post('/clients', params)
   end
 
+  def sites
+    get('/sites')
+  end
+
 private
   def get(path)
     self.class.get(path, options)
