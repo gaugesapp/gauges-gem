@@ -42,7 +42,7 @@ describe Gauges do
   describe "#me" do
     before do
       stub_get('http://john%40orderedlist.com:foobar@api.gaug.es/me', :me)
-      @client  = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
+      @client   = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
       @response = @client.me
     end
 
@@ -62,7 +62,7 @@ describe Gauges do
   describe "#clients" do
     before do
       stub_get('http://john%40orderedlist.com:foobar@api.gaug.es/clients', :clients)
-      @client  = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
+      @client   = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
       @response = @client.clients
     end
 
@@ -80,7 +80,7 @@ describe Gauges do
   describe "#create_client" do
     before do
       stub_post('http://john%40orderedlist.com:foobar@api.gaug.es/clients', :client_create)
-      @client = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
+      @client   = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
       @response = @client.create_client(:description => 'HipChat')
     end
 
@@ -126,7 +126,7 @@ describe Gauges do
     context "invalid" do
       before do
         stub_put('http://john%40orderedlist.com:foobar@api.gaug.es/me', :me_update_invalid)
-        @client = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
+        @client   = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
         @response = @client.update_me(:email => 'asdf')
       end
 
