@@ -17,6 +17,18 @@ class Gauges
     @options[:password]
   end
 
+  def token
+    @options[:token]
+  end
+
+  def basic_auth?
+    @options.key?(:email) && @options.key?(:password)
+  end
+
+  def header_auth?
+    !basic_auth?
+  end
+
   def me
     get('/me')
   end
@@ -52,7 +64,14 @@ private
   end
 
   def options(hash={})
-    hash.merge(:basic_auth => basic_auth)
+    if basic_auth?
+      hash.merge!(:basic_auth => basic_auth)
+    else
+      hash[:headers] ||= {}
+      hash[:headers]['X-Gauges-Token'] = token
+    end
+
+    hash
   end
 
   def basic_auth

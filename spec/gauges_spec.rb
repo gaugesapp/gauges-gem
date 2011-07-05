@@ -13,12 +13,38 @@ describe Gauges do
     it "sets password" do
       @client.password.should == 'foobar'
     end
+
+    it "knows it is using http auth" do
+      @client.basic_auth?.should be_true
+    end
+
+    it "knows it is not using token" do
+      @client.header_auth?.should be_false
+    end
+  end
+
+  context "initializing with token" do
+    before do
+      @client = Gauges.new(:token => 'asdf')
+    end
+
+    it "sets token" do
+      @client.token.should == 'asdf'
+    end
+
+    it "knows it is using token" do
+      @client.header_auth?.should be_true
+    end
+
+    it "knows it is not using http auth" do
+      @client.basic_auth?.should be_false
+    end
   end
 
   context "http auth failure" do
     before do
-      stub_get('http://john%40orderedlist.com:foobar@api.gaug.es/clients', :clients_http_auth_failure)
-      @client   = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
+      stub_get('http://api.gaug.es/clients', :clients_http_auth_failure)
+      @client   = Gauges.new(:token => 'asdf')
       @response = @client.clients
     end
 
@@ -39,10 +65,39 @@ describe Gauges do
     end
   end
 
+  context "making request with token" do
+    before do
+      stub_get('http://api.gaug.es/me', :me)
+      @client = Gauges.new(:token => 'asdf')
+    end
+
+    it "sets token header for request" do
+      Gauges.should_receive(:get).with('/me', :headers => {
+        'X-Gauges-Token' => 'asdf'
+      })
+      @client.me
+    end
+  end
+
+  context "making request with basic auth" do
+    before do
+      stub_get('http://api.gaug.es/me', :me)
+      @client = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
+    end
+
+    it "sets basic auth option" do
+      Gauges.should_receive(:get).with('/me', :basic_auth => {
+        :username => 'john@orderedlist.com',
+        :password => 'foobar',
+      })
+      @client.me
+    end
+  end
+
   describe "#me" do
     before do
-      stub_get('http://john%40orderedlist.com:foobar@api.gaug.es/me', :me)
-      @client   = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
+      stub_get('http://api.gaug.es/me', :me)
+      @client   = Gauges.new(:token => 'asdf')
       @response = @client.me
     end
 
@@ -61,8 +116,8 @@ describe Gauges do
 
   describe "#clients" do
     before do
-      stub_get('http://john%40orderedlist.com:foobar@api.gaug.es/clients', :clients)
-      @client   = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
+      stub_get('http://api.gaug.es/clients', :clients)
+      @client   = Gauges.new(:token => 'asdf')
       @response = @client.clients
     end
 
@@ -79,8 +134,8 @@ describe Gauges do
 
   describe "#create_client" do
     before do
-      stub_post('http://john%40orderedlist.com:foobar@api.gaug.es/clients', :client_create)
-      @client   = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
+      stub_post('http://api.gaug.es/clients', :client_create)
+      @client   = Gauges.new(:token => 'asdf')
       @response = @client.create_client(:description => 'HipChat')
     end
 
@@ -100,8 +155,8 @@ describe Gauges do
   describe "#update_me" do
     context "valid" do
       before do
-        stub_put('http://john%40orderedlist.com:foobar@api.gaug.es/me', :me_update)
-        @client = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
+        stub_put('http://api.gaug.es/me', :me_update)
+        @client = Gauges.new(:token => 'asdf')
         @response = @client.update_me(:first_name => 'Frank', :last_name => 'Furter')
       end
 
@@ -125,8 +180,8 @@ describe Gauges do
 
     context "invalid" do
       before do
-        stub_put('http://john%40orderedlist.com:foobar@api.gaug.es/me', :me_update_invalid)
-        @client   = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
+        stub_put('http://api.gaug.es/me', :me_update_invalid)
+        @client   = Gauges.new(:token => 'asdf')
         @response = @client.update_me(:email => 'asdf')
       end
 
@@ -146,8 +201,8 @@ describe Gauges do
 
   describe "#sites" do
     before do
-      stub_get('http://john%40orderedlist.com:foobar@api.gaug.es/sites', :sites)
-      @client   = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
+      stub_get('http://api.gaug.es/sites', :sites)
+      @client   = Gauges.new(:token => 'asdf')
       @response = @client.sites
     end
 
