@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Date: Sun, 03 Jul 2011 16:30:13 GMT
+Server: Apache/2.2.14 (Ubuntu)
+X-Powered-By: Phusion Passenger (mod_rails/mod_rack) 3.0.6
+X-Runtime: 0.118768
+Content-Length: 671
+Status: 200
+Connection: close
+Content-Type: application/json
+
+{"name":"John Nunemaker","sites":[{"id":"4e109b34bcd1b358f2000003","owner":true},{"id":"4e109b33bcd1b358f2000002"}],"id":"4e109addbcd1b358f2000001","last_name":"Nunemaker","first_name":"John","email":"john@orderedlist.com"}

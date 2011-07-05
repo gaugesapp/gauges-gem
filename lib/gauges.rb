@@ -17,8 +17,12 @@ class Gauges
     @options[:password]
   end
 
-  def basic_auth
-    {:username => email, :password => password}
+  def me
+    get('/me')
+  end
+
+  def update_me(params={})
+    put('/me', params)
   end
 
   def clients
@@ -39,7 +43,15 @@ private
     self.class.post(path, options(:body => body))
   end
 
+  def put(path, body={})
+    self.class.put(path, options(:body => body))
+  end
+
   def options(hash={})
     hash.merge(:basic_auth => basic_auth)
+  end
+
+  def basic_auth
+    {:username => email, :password => password}
   end
 end
