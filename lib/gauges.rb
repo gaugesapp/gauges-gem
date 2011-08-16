@@ -50,36 +50,36 @@ class Gauges
     delete("/sites/#{id}")
   end
 
-  def content(id)
-    get("/sites/#{id}/content")
+  def content(id, params={})
+    get("/sites/#{id}/content", params)
   end
 
-  def referrers(id)
-    get("/sites/#{id}/referrers")
+  def referrers(id, params={})
+    get("/sites/#{id}/referrers", params)
   end
 
-  def traffic(id)
-    get("/sites/#{id}/traffic")
+  def traffic(id, params={})
+    get("/sites/#{id}/traffic", params)
   end
 
-  def resolutions(id)
-    get("/sites/#{id}/resolutions")
+  def resolutions(id, params={})
+    get("/sites/#{id}/resolutions", params)
   end
 
-  def technology(id)
-    get("/sites/#{id}/technology")
+  def technology(id, params={})
+    get("/sites/#{id}/technology", params)
   end
 
-  def terms(id)
+  def terms(id, params={})
     get("/sites/#{id}/terms")
   end
 
-  def engines(id)
-    get("/sites/#{id}/engines")
+  def engines(id, params={})
+    get("/sites/#{id}/engines", params)
   end
 
-  def locations(id)
-    get("/sites/#{id}/locations")
+  def locations(id, params={})
+    get("/sites/#{id}/locations", params)
   end
 
   def email
@@ -103,8 +103,8 @@ class Gauges
   end
 
 private
-  def get(path)
-    self.class.get(path, options)
+  def get(path, params)
+    self.class.get(path, options(:query => params))
   end
 
   def post(path, body={})
