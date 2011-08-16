@@ -50,6 +50,58 @@ class Gauges
     delete("/sites/#{id}")
   end
 
+  def content(id)
+    get("/sites/#{id}/content")
+  end
+
+  def referrers(id)
+    get("/sites/#{id}/referrers")
+  end
+
+  def traffic(id)
+    get("/sites/#{id}/traffic")
+  end
+
+  def resolutions(id)
+    get("/sites/#{id}/resolutions")
+  end
+
+  def technology(id)
+    get("/sites/#{id}/technology")
+  end
+
+  def terms(id)
+    get("/sites/#{id}/terms")
+  end
+
+  def engines(id)
+    get("/sites/#{id}/engines")
+  end
+
+  def locations(id)
+    get("/sites/#{id}/locations")
+  end
+
+  def email
+    @options[:email]
+  end
+
+  def password
+    @options[:password]
+  end
+
+  def token
+    @options[:token]
+  end
+
+  def basic_auth?
+    @options.key?(:email) && @options.key?(:password)
+  end
+
+  def header_auth?
+    !basic_auth?
+  end
+
 private
   def get(path)
     self.class.get(path, options)
@@ -76,26 +128,6 @@ private
     end
 
     hash
-  end
-
-  def email
-    @options[:email]
-  end
-
-  def password
-    @options[:password]
-  end
-
-  def token
-    @options[:token]
-  end
-
-  def basic_auth?
-    @options.key?(:email) && @options.key?(:password)
-  end
-
-  def header_auth?
-    !basic_auth?
   end
 
   def basic_auth
