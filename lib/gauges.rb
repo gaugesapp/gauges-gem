@@ -28,6 +28,10 @@ class Gauges
     post('/clients', params)
   end
 
+  def delete_client(id)
+    delete("/clients/#{id}")
+  end
+
   def sites
     get('/sites')
   end

@@ -74,7 +74,7 @@ describe Gauges do
     it "sets token header for request" do
       Gauges.should_receive(:get).with('/me', :headers => {
         'X-Gauges-Token' => 'asdf'
-      })
+      }, :query => {})
       @client.me
     end
   end
@@ -89,7 +89,7 @@ describe Gauges do
       Gauges.should_receive(:get).with('/me', :basic_auth => {
         :username => 'john@orderedlist.com',
         :password => 'foobar',
-      })
+      }, :query => {})
       @client.me
     end
   end
@@ -149,6 +149,24 @@ describe Gauges do
       @response['key'].should         == 'asdf'
       @response['description'].should == 'HipChat'
       @response['created_at'].should  == Time.utc(2011, 7, 3, 15, 38, 28)
+    end
+  end
+
+  describe "#delete_client" do
+    before do
+      stub_delete('http://api.gaug.es/clients/acb5a1d9dcf209a3a382da61b860278f', :client_delete)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.delete_client('acb5a1d9dcf209a3a382da61b860278f')
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns client" do
+      @response['key'].should         == 'acb5a1d9dcf209a3a382da61b860278f'
+      @response['description'].should == 'Testing'
+      @response['created_at'].should  == Time.parse('2011-08-16T16:31:23Z')
     end
   end
 
