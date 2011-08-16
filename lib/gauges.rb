@@ -4,6 +4,7 @@ class Gauges
   include HTTParty
 
   base_uri 'api.gaug.es'
+  # base_uri 'gauges.dev'
 
   # :email/:password or :token
   def initialize(options={})
@@ -62,6 +63,14 @@ class Gauges
     get("/sites/#{id}")
   end
 
+  def update_site(id, params={})
+    put("/sites/#{id}", params)
+  end
+
+  def delete_site(id)
+    delete("/sites/#{id}")
+  end
+
 private
   def get(path)
     self.class.get(path, options)
@@ -73,6 +82,10 @@ private
 
   def put(path, body={})
     self.class.put(path, options(:body => body))
+  end
+
+  def delete(path)
+    self.class.delete(path, options)
   end
 
   def options(hash={})

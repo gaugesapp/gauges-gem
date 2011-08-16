@@ -34,6 +34,10 @@ module FakeRequestHelpers
   def stub_put(url, name)
     FakeWeb.register_uri(:put, url, :response => fixture(name))
   end
+
+  def stub_delete(url, name)
+    FakeWeb.register_uri(:delete, url, :response => fixture(name))
+  end
 end
 
 RSpec.configure do |c|

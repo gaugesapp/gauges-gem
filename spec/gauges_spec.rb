@@ -388,4 +388,48 @@ describe Gauges do
       end
     end
   end
+
+  describe "#update_site" do
+    before do
+      stub_put('http://api.gaug.es/sites/4e4ab1674c114f2cb7000008', :site_update)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.update_site('4e4ab1674c114f2cb7000008', :title => 'Testing')
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns updated site" do
+      @response['title'].should         == 'Testing'
+      @response['service_value'].should == 'testing.com'
+      @response['tz'].should            == 'Eastern Time (US & Canada)'
+      @response['id'].should            == '4e4ab1674c114f2cb7000008'
+      @response['creator_id'].should    == '4e485b734c114f083c000001'
+      @response['now_in_zone'].should   == Time.parse('2011-08-16T14:13:34-04:00')
+      @response['enabled'].should       == true
+    end
+  end
+
+  describe "#delete_site" do
+    before do
+      stub_delete('http://api.gaug.es/sites/4e4aa0f84c114f25c1000004', :site_delete)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.delete_site('4e4aa0f84c114f25c1000004')
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns site" do
+      @response['title'].should         == 'Testing'
+      @response['service_value'].should == 'testing.com'
+      @response['tz'].should            == 'Eastern Time (US & Canada)'
+      @response['id'].should            == '4e4aa0f84c114f25c1000004'
+      @response['creator_id'].should    == '4e485b734c114f083c000001'
+      @response['now_in_zone'].should   == Time.parse('2011-08-16T13:56:32-04:00')
+      @response['enabled'].should       == true
+    end
+  end
 end
