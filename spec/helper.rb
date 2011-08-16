@@ -36,7 +36,7 @@ module FakeRequestHelpers
   end
 end
 
-Rspec.configure do |c|
+RSpec.configure do |c|
   c.include(FakeRequestHelpers)
 
   c.before(:each) do
