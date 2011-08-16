@@ -295,4 +295,97 @@ describe Gauges do
       ]
     end
   end
+
+  describe "#create_site" do
+    context "valid" do
+      before do
+        stub_post('http://api.gaug.es/sites', :site_create_valid)
+        @client   = Gauges.new(:token => 'asdf')
+        @response = @client.create_site({
+          :title          => 'Testing',
+          :service_value  => 'testing.com',
+          :tz             => 'Eastern Time (US & Canada)'
+        })
+      end
+
+      it "returns 201" do
+        @response.code.should == 201
+      end
+
+      it "returns site" do
+        @response['title'].should         == 'Testing'
+        @response['service_value'].should == 'testing.com'
+        @response['tz'].should            == 'Eastern Time (US & Canada)'
+        @response['id'].should            == '4e4aa0f84c114f25c1000004'
+        @response['creator_id'].should    == '4e485b734c114f083c000001'
+        @response['now_in_zone'].should   == Time.parse('2011-08-16T12:55:20-04:00')
+        @response['enabled'].should       == true
+      end
+    end
+
+    context "invalid" do
+      before do
+        stub_post('http://api.gaug.es/sites', :site_create_invalid)
+        @client   = Gauges.new(:token => 'asdf')
+        @response = @client.create_site({
+          :title          => 'Testing',
+          :service_value  => 'testing.com',
+          :tz             => 'PooPoo'
+        })
+      end
+
+      it "returns 422" do
+        @response.code.should == 422
+      end
+
+      it "returns errors" do
+        @response['errors'].should == {'tz' => 'is not included in the list'}
+      end
+
+      it "returns full messages" do
+        @response['full_messages'].should == ['Tz is not included in the list']
+      end
+    end
+  end
+
+  describe "#site" do
+    context "found" do
+      before do
+        stub_get('http://api.gaug.es/sites/4e4aa0f84c114f25c1000004', :site)
+        @client   = Gauges.new(:token => 'asdf')
+        @response = @client.site('4e4aa0f84c114f25c1000004')
+      end
+
+      it "returns 200" do
+        @response.code.should == 200
+      end
+
+      it "returns site" do
+        @response['title'].should         == 'Testing'
+        @response['service_value'].should == 'testing.com'
+        @response['tz'].should            == 'Eastern Time (US & Canada)'
+        @response['id'].should            == '4e4aa0f84c114f25c1000004'
+        @response['creator_id'].should    == '4e485b734c114f083c000001'
+        @response['now_in_zone'].should   == Time.parse('2011-08-16T12:55:20-04:00')
+        @response['enabled'].should       == true
+      end
+    end
+
+    context "not found" do
+      before do
+        stub_get('http://api.gaug.es/sites/1234', :site_not_found)
+        @client   = Gauges.new(:token => 'asdf')
+        @response = @client.site('1234')
+      end
+
+      it "returns 404" do
+        @response.code.should == 404
+      end
+
+      it "returns message" do
+        @response['message'].should == 'Not found'
+        @response['status'].should  == 'fail'
+      end
+    end
+  end
 end

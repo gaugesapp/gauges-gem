@@ -5,6 +5,7 @@ class Gauges
 
   base_uri 'api.gaug.es'
 
+  # :email/:password or :token
   def initialize(options={})
     @options = options
   end
@@ -48,6 +49,17 @@ class Gauges
 
   def sites
     get('/sites')
+  end
+
+  # :title          => The title of the site (ie: RailsTips)
+  # :service_value  => The domain of the site (ie: railstips.org)
+  # :tz             => The time zone stats should be tracked in
+  def create_site(params={})
+    post('/sites', params)
+  end
+
+  def site(id)
+    get("/sites/#{id}")
   end
 
 private

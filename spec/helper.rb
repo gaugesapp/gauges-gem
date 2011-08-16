@@ -45,3 +45,6 @@ RSpec.configure do |c|
 end
 
 FakeWeb.allow_net_connect = false
+
+# Creating fixtures:
+# curl -is -H "X-Gauges-Token: <token here>" http://api.gaug.es/sites/1234 > spec/fixtures/site_not_found
