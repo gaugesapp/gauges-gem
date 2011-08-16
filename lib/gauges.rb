@@ -14,6 +14,7 @@ class Gauges
     get('/me')
   end
 
+  # email, password, first_name, last_name
   def update_me(params={})
     put('/me', params)
   end
