@@ -104,7 +104,7 @@ class Gauges
   end
 
 private
-  def get(path, params)
+  def get(path, params={})
     self.class.get(path, options(:query => params))
   end
 
