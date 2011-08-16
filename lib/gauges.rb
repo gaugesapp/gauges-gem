@@ -4,31 +4,10 @@ class Gauges
   include HTTParty
 
   base_uri 'api.gaug.es'
-  # base_uri 'gauges.dev'
 
   # :email/:password or :token
   def initialize(options={})
     @options = options
-  end
-
-  def email
-    @options[:email]
-  end
-
-  def password
-    @options[:password]
-  end
-
-  def token
-    @options[:token]
-  end
-
-  def basic_auth?
-    @options.key?(:email) && @options.key?(:password)
-  end
-
-  def header_auth?
-    !basic_auth?
   end
 
   def me
@@ -97,6 +76,26 @@ private
     end
 
     hash
+  end
+
+  def email
+    @options[:email]
+  end
+
+  def password
+    @options[:password]
+  end
+
+  def token
+    @options[:token]
+  end
+
+  def basic_auth?
+    @options.key?(:email) && @options.key?(:password)
+  end
+
+  def header_auth?
+    !basic_auth?
   end
 
   def basic_auth
