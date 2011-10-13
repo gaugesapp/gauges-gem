@@ -107,7 +107,7 @@ describe Gauges do
       @response['email'].should       == 'john@orderedlist.com'
       @response['first_name'].should  == 'John'
       @response['last_name'].should   == 'Nunemaker'
-      @response['sites'].should == [
+      @response['gauges'].should == [
         {'id' => '4e109b34bcd1b358f2000003', 'owner' => true},
         {'id' => '4e109b33bcd1b358f2000002'},
       ]
@@ -189,7 +189,7 @@ describe Gauges do
         @response['first_name'].should  == 'John'
         @response['last_name'].should   == 'Nunemaker'
         @response['email'].should       == 'john@orderedlist.com'
-        @response['sites'].should       == [
+        @response['gauges'].should      == [
           {'id' => '4e038e0ebcd1b32016000007'},
           {'id' => '4e0902b3bcd1b379ec000001', 'owner' => true},
         ]
@@ -217,11 +217,11 @@ describe Gauges do
     end
   end
 
-  describe "#sites" do
+  describe "#gauges" do
     before do
-      stub_get('http://api.gaug.es/sites', :sites)
+      stub_get('http://api.gaug.es/gauges', :gauges)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.sites
+      @response = @client.gauges
     end
 
     it "returns 200" do
@@ -232,17 +232,17 @@ describe Gauges do
       @response.should be_instance_of(Array)
     end
 
-    it "returns sites" do
-      site = @response[0]
+    it "returns gauges" do
+      gauge = @response[0]
 
-      site['title'].should         == 'RailsTips'
-      site['service_value'].should == 'railstips.org'
-      site['tz'].should            == 'Eastern Time (US & Canada)'
-      site['id'].should            == '4d5f4992089bb618a2000005'
-      site['creator_id'].should    == '4d58a6800184f6792e000001'
-      site['now_in_zone'].should   == Time.parse('Tue Jul 05 10:40:14 -0400 2011')
-      site['enabled'].should       == true
-      site['recent_months'].should == [
+      gauge['title'].should         == 'RailsTips'
+      gauge['service_value'].should == 'railstips.org'
+      gauge['tz'].should            == 'Eastern Time (US & Canada)'
+      gauge['id'].should            == '4d5f4992089bb618a2000005'
+      gauge['creator_id'].should    == '4d58a6800184f6792e000001'
+      gauge['now_in_zone'].should   == Time.parse('Tue Jul 05 10:40:14 -0400 2011')
+      gauge['enabled'].should       == true
+      gauge['recent_months'].should == [
         {"views" => 4324,  "date" => "2011-07", "people" => 2103},
         {"views" => 42613, "date" => "2011-06", "people" => 22766},
         {"views" => 39540, "date" => "2011-05", "people" => 19561},
@@ -250,10 +250,10 @@ describe Gauges do
         {"views" => 59252, "date" => "2011-03", "people" => 28867},
         {"views" => 19039, "date" => "2011-02", "people" => 10406},
       ]
-      site['all_time'].should      == {"views" => 202509, "people" => 96293}
-      site['today'].should         == {"views" => 551,  "date" => Date.new(2011, 7, 5), "people" => 379}
-      site['yesterday'].should     == {"views" => 1156, "date" => Date.new(2011, 7, 4), "people" => 724}
-      site['recent_hours'].should  == [
+      gauge['all_time'].should      == {"views" => 202509, "people" => 96293}
+      gauge['today'].should         == {"views" => 551,  "date" => Date.new(2011, 7, 5), "people" => 379}
+      gauge['yesterday'].should     == {"views" => 1156, "date" => Date.new(2011, 7, 4), "people" => 724}
+      gauge['recent_hours'].should  == [
         {"hour" => "10", "views" => 64, "people" => 56},
         {"hour" => "09", "views" => 68, "people" => 57},
         {"hour" => "08", "views" => 60, "people" => 45},
@@ -279,7 +279,7 @@ describe Gauges do
         {"hour" => "12", "views" => 51, "people" => 32},
         {"hour" => "11", "views" => 77, "people" => 52},
       ]
-      site['recent_days'].should   == [
+      gauge['recent_days'].should   == [
         {"views" => 551,  "date" => Date.new(2011, 7, 5),  "people" => 379},
         {"views" => 1156, "date" => Date.new(2011, 7, 4),  "people" => 724},
         {"views" => 731,  "date" => Date.new(2011, 7, 3),  "people" => 465},
@@ -314,12 +314,12 @@ describe Gauges do
     end
   end
 
-  describe "#create_site" do
+  describe "#create_gauge" do
     context "valid" do
       before do
-        stub_post('http://api.gaug.es/sites', :site_create_valid)
+        stub_post('http://api.gaug.es/gauges', :gauge_create_valid)
         @client   = Gauges.new(:token => 'asdf')
-        @response = @client.create_site({
+        @response = @client.create_gauge({
           :title          => 'Testing',
           :service_value  => 'testing.com',
           :tz             => 'Eastern Time (US & Canada)'
@@ -330,7 +330,7 @@ describe Gauges do
         @response.code.should == 201
       end
 
-      it "returns site" do
+      it "returns gauge" do
         @response['title'].should         == 'Testing'
         @response['service_value'].should == 'testing.com'
         @response['tz'].should            == 'Eastern Time (US & Canada)'
@@ -343,9 +343,9 @@ describe Gauges do
 
     context "invalid" do
       before do
-        stub_post('http://api.gaug.es/sites', :site_create_invalid)
+        stub_post('http://api.gaug.es/gauges', :gauge_create_invalid)
         @client   = Gauges.new(:token => 'asdf')
-        @response = @client.create_site({
+        @response = @client.create_gauge({
           :title          => 'Testing',
           :service_value  => 'testing.com',
           :tz             => 'PooPoo'
@@ -366,19 +366,19 @@ describe Gauges do
     end
   end
 
-  describe "#site" do
+  describe "#gauge" do
     context "found" do
       before do
-        stub_get('http://api.gaug.es/sites/4e4aa0f84c114f25c1000004', :site)
+        stub_get('http://api.gaug.es/gauges/4e4aa0f84c114f25c1000004', :gauge)
         @client   = Gauges.new(:token => 'asdf')
-        @response = @client.site('4e4aa0f84c114f25c1000004')
+        @response = @client.gauge('4e4aa0f84c114f25c1000004')
       end
 
       it "returns 200" do
         @response.code.should == 200
       end
 
-      it "returns site" do
+      it "returns gauge" do
         @response['title'].should         == 'Testing'
         @response['service_value'].should == 'testing.com'
         @response['tz'].should            == 'Eastern Time (US & Canada)'
@@ -391,9 +391,9 @@ describe Gauges do
 
     context "not found" do
       before do
-        stub_get('http://api.gaug.es/sites/1234', :site_not_found)
+        stub_get('http://api.gaug.es/gauges/1234', :gauge_not_found)
         @client   = Gauges.new(:token => 'asdf')
-        @response = @client.site('1234')
+        @response = @client.gauge('1234')
       end
 
       it "returns 404" do
@@ -407,18 +407,18 @@ describe Gauges do
     end
   end
 
-  describe "#update_site" do
+  describe "#update_gauge" do
     before do
-      stub_put('http://api.gaug.es/sites/4e4ab1674c114f2cb7000008', :site_update)
+      stub_put('http://api.gaug.es/gauges/4e4ab1674c114f2cb7000008', :gauge_update)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.update_site('4e4ab1674c114f2cb7000008', :title => 'Testing')
+      @response = @client.update_gauge('4e4ab1674c114f2cb7000008', :title => 'Testing')
     end
 
     it "returns 200" do
       @response.code.should == 200
     end
 
-    it "returns updated site" do
+    it "returns updated gauge" do
       @response['title'].should         == 'Testing'
       @response['service_value'].should == 'testing.com'
       @response['tz'].should            == 'Eastern Time (US & Canada)'
@@ -429,18 +429,18 @@ describe Gauges do
     end
   end
 
-  describe "#delete_site" do
+  describe "#delete_gauge" do
     before do
-      stub_delete('http://api.gaug.es/sites/4e4aa0f84c114f25c1000004', :site_delete)
+      stub_delete('http://api.gaug.es/gauges/4e4aa0f84c114f25c1000004', :gauge_delete)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.delete_site('4e4aa0f84c114f25c1000004')
+      @response = @client.delete_gauge('4e4aa0f84c114f25c1000004')
     end
 
     it "returns 200" do
       @response.code.should == 200
     end
 
-    it "returns site" do
+    it "returns gauge" do
       @response['title'].should         == 'Testing'
       @response['service_value'].should == 'testing.com'
       @response['tz'].should            == 'Eastern Time (US & Canada)'

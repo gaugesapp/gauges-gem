@@ -8,4 +8,4 @@ Status: 200
 Connection: close
 Content-Type: application/json
 
-{"name":"John Nunemaker","sites":[{"id":"4e109b34bcd1b358f2000003","owner":true},{"id":"4e109b33bcd1b358f2000002"}],"id":"4e109addbcd1b358f2000001","last_name":"Nunemaker","first_name":"John","email":"john@orderedlist.com"}
+{"name":"John Nunemaker","gauges":[{"id":"4e109b34bcd1b358f2000003","owner":true},{"id":"4e109b33bcd1b358f2000002"}],"id":"4e109addbcd1b358f2000001","last_name":"Nunemaker","first_name":"John","email":"john@orderedlist.com"}
