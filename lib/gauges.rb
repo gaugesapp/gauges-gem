@@ -55,6 +55,10 @@ class Gauges
     delete("/gauges/#{id}")
   end
 
+  def users(id)
+    get("/gauges/#{id}/users")
+  end
+
   def content(id, params={})
     get("/gauges/#{id}/content", params)
   end

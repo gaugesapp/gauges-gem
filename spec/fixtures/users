@@ -1,0 +1,6 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+Set-Cookie: rack.session=BAh7AA%3D%3D%0A--ec3ba6a2c83f2dc155420e85f25335320848a463; path=/; expires=Tue, 25-Oct-2011 19:13:45 GMT
+Connection: keep-alive
+
+{"invites":[],"users":[{"name":"John Doe","id":"abcdefg","email":"john@example.com"}]}

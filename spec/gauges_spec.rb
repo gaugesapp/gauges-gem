@@ -450,4 +450,31 @@ describe Gauges do
       @response['gauge']['enabled'].should       == true
     end
   end
+
+  describe "#users" do
+    before do
+      stub_get('http://api.gaug.es/gauges/1234/users', :users)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.users(1234)
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns Hash" do
+      @response.should be_instance_of(Hash)
+    end
+
+    it "returns a users hash" do
+      @response.should be_an_instance_of(Hash)
+      @response['invites'].size.should be(0)
+      @response['users'].size.should be(1)
+
+      user = @response['users'].first
+      user['id'].should     == 'abcdefg'
+      user['name'].should   == 'John Doe'
+      user['email'].should  == 'john@example.com'
+    end
+  end
 end
