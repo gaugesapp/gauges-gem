@@ -3,7 +3,6 @@ Date: Sun, 03 Jul 2011 15:37:12 GMT
 Server: Apache/2.2.14 (Ubuntu)
 X-Powered-By: Phusion Passenger (mod_rails/mod_rack) 3.0.6
 X-Runtime: 0.187227
-Content-Length: 53
 Status: 401
 Connection: close
 Content-Type: application/json

@@ -102,12 +102,12 @@ describe Gauges do
     end
 
     it "returns my own information" do
-      @response['id'].should          == '4e109addbcd1b358f2000001'
-      @response['name'].should        == 'John Nunemaker'
-      @response['email'].should       == 'john@orderedlist.com'
-      @response['first_name'].should  == 'John'
-      @response['last_name'].should   == 'Nunemaker'
-      @response['gauges'].should == [
+      @response['user']['id'].should          == '4e109addbcd1b358f2000001'
+      @response['user']['name'].should        == 'John Nunemaker'
+      @response['user']['email'].should       == 'john@orderedlist.com'
+      @response['user']['first_name'].should  == 'John'
+      @response['user']['last_name'].should   == 'Nunemaker'
+      @response['user']['gauges'].should == [
         {'id' => '4e109b34bcd1b358f2000003', 'owner' => true},
         {'id' => '4e109b33bcd1b358f2000002'},
       ]
@@ -122,10 +122,10 @@ describe Gauges do
     end
 
     it "returns an array of clients" do
-      @response.should be_instance_of(Array)
-      @response.size.should be(1)
+      @response.should be_instance_of(Hash)
+      @response['clients'].size.should be(1)
 
-      client = @response.first
+      client = @response['clients'].first
       client['key'].should          == 'asdf'
       client['created_at'].should   == Time.utc(2011, 7, 3, 15, 38, 28)
       client['description'].should  == 'HipChat'
@@ -146,9 +146,9 @@ describe Gauges do
     it "returns created client" do
       @response.should be_instance_of(Hash)
 
-      @response['key'].should         == 'asdf'
-      @response['description'].should == 'HipChat'
-      @response['created_at'].should  == Time.utc(2011, 7, 3, 15, 38, 28)
+      @response['client']['key'].should         == 'asdf'
+      @response['client']['description'].should == 'HipChat'
+      @response['client']['created_at'].should  == Time.utc(2011, 7, 3, 15, 38, 28)
     end
   end
 
@@ -164,9 +164,9 @@ describe Gauges do
     end
 
     it "returns client" do
-      @response['key'].should         == 'acb5a1d9dcf209a3a382da61b860278f'
-      @response['description'].should == 'Testing'
-      @response['created_at'].should  == Time.parse('2011-08-16T16:31:23Z')
+      @response['client']['key'].should         == 'acb5a1d9dcf209a3a382da61b860278f'
+      @response['client']['description'].should == 'Testing'
+      @response['client']['created_at'].should  == Time.parse('2011-08-16T16:31:23Z')
     end
   end
 
@@ -184,12 +184,12 @@ describe Gauges do
 
       it "returns update user" do
         @response.should be_instance_of(Hash)
-        @response['id'].should          == '4e038e0dbcd1b32016000002'
-        @response['name'].should        == 'John Nunemaker'
-        @response['first_name'].should  == 'John'
-        @response['last_name'].should   == 'Nunemaker'
-        @response['email'].should       == 'john@orderedlist.com'
-        @response['gauges'].should      == [
+        @response['user']['id'].should          == '4e038e0dbcd1b32016000002'
+        @response['user']['name'].should        == 'John Nunemaker'
+        @response['user']['first_name'].should  == 'John'
+        @response['user']['last_name'].should   == 'Nunemaker'
+        @response['user']['email'].should       == 'john@orderedlist.com'
+        @response['user']['gauges'].should      == [
           {'id' => '4e038e0ebcd1b32016000007'},
           {'id' => '4e0902b3bcd1b379ec000001', 'owner' => true},
         ]
@@ -229,11 +229,11 @@ describe Gauges do
     end
 
     it "returns array" do
-      @response.should be_instance_of(Array)
+      @response.should be_instance_of(Hash)
     end
 
     it "returns gauges" do
-      gauge = @response[0]
+      gauge = @response['gauges'][0]
 
       gauge['title'].should         == 'RailsTips'
       gauge['service_value'].should == 'railstips.org'
@@ -331,13 +331,13 @@ describe Gauges do
       end
 
       it "returns gauge" do
-        @response['title'].should         == 'Testing'
-        @response['service_value'].should == 'testing.com'
-        @response['tz'].should            == 'Eastern Time (US & Canada)'
-        @response['id'].should            == '4e4aa0f84c114f25c1000004'
-        @response['creator_id'].should    == '4e485b734c114f083c000001'
-        @response['now_in_zone'].should   == Time.parse('2011-08-16T12:55:20-04:00')
-        @response['enabled'].should       == true
+        @response['gauge']['title'].should         == 'Testing'
+        @response['gauge']['service_value'].should == 'testing.com'
+        @response['gauge']['tz'].should            == 'Eastern Time (US & Canada)'
+        @response['gauge']['id'].should            == '4e4aa0f84c114f25c1000004'
+        @response['gauge']['creator_id'].should    == '4e485b734c114f083c000001'
+        @response['gauge']['now_in_zone'].should   == Time.parse('2011-08-16T12:55:20-04:00')
+        @response['gauge']['enabled'].should       == true
       end
     end
 
@@ -379,13 +379,13 @@ describe Gauges do
       end
 
       it "returns gauge" do
-        @response['title'].should         == 'Testing'
-        @response['service_value'].should == 'testing.com'
-        @response['tz'].should            == 'Eastern Time (US & Canada)'
-        @response['id'].should            == '4e4aa0f84c114f25c1000004'
-        @response['creator_id'].should    == '4e485b734c114f083c000001'
-        @response['now_in_zone'].should   == Time.parse('2011-08-16T12:55:20-04:00')
-        @response['enabled'].should       == true
+        @response['gauge']['title'].should         == 'Testing'
+        @response['gauge']['service_value'].should == 'testing.com'
+        @response['gauge']['tz'].should            == 'Eastern Time (US & Canada)'
+        @response['gauge']['id'].should            == '4e4aa0f84c114f25c1000004'
+        @response['gauge']['creator_id'].should    == '4e485b734c114f083c000001'
+        @response['gauge']['now_in_zone'].should   == Time.parse('2011-08-16T12:55:20-04:00')
+        @response['gauge']['enabled'].should       == true
       end
     end
 
@@ -419,13 +419,13 @@ describe Gauges do
     end
 
     it "returns updated gauge" do
-      @response['title'].should         == 'Testing'
-      @response['service_value'].should == 'testing.com'
-      @response['tz'].should            == 'Eastern Time (US & Canada)'
-      @response['id'].should            == '4e4ab1674c114f2cb7000008'
-      @response['creator_id'].should    == '4e485b734c114f083c000001'
-      @response['now_in_zone'].should   == Time.parse('2011-08-16T14:13:34-04:00')
-      @response['enabled'].should       == true
+      @response['gauge']['title'].should         == 'Testing'
+      @response['gauge']['service_value'].should == 'testing.com'
+      @response['gauge']['tz'].should            == 'Eastern Time (US & Canada)'
+      @response['gauge']['id'].should            == '4e4ab1674c114f2cb7000008'
+      @response['gauge']['creator_id'].should    == '4e485b734c114f083c000001'
+      @response['gauge']['now_in_zone'].should   == Time.parse('2011-08-16T14:13:34-04:00')
+      @response['gauge']['enabled'].should       == true
     end
   end
 
@@ -441,13 +441,13 @@ describe Gauges do
     end
 
     it "returns gauge" do
-      @response['title'].should         == 'Testing'
-      @response['service_value'].should == 'testing.com'
-      @response['tz'].should            == 'Eastern Time (US & Canada)'
-      @response['id'].should            == '4e4aa0f84c114f25c1000004'
-      @response['creator_id'].should    == '4e485b734c114f083c000001'
-      @response['now_in_zone'].should   == Time.parse('2011-08-16T13:56:32-04:00')
-      @response['enabled'].should       == true
+      @response['gauge']['title'].should         == 'Testing'
+      @response['gauge']['service_value'].should == 'testing.com'
+      @response['gauge']['tz'].should            == 'Eastern Time (US & Canada)'
+      @response['gauge']['id'].should            == '4e4aa0f84c114f25c1000004'
+      @response['gauge']['creator_id'].should    == '4e485b734c114f083c000001'
+      @response['gauge']['now_in_zone'].should   == Time.parse('2011-08-16T13:56:32-04:00')
+      @response['gauge']['enabled'].should       == true
     end
   end
 end
