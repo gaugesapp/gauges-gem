@@ -473,4 +473,198 @@ describe Gauges do
       user['email'].should  == 'john@example.com'
     end
   end
+
+  describe "#content" do
+    before do
+      stub_get('http://api.gaug.es/gauges/45ab67cd/content', :content)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.content('45ab67cd')
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns a hash with content as the primary key" do
+      @response.should be_an_instance_of(Hash)
+      @response['content'].size.should be(1)
+
+      item = @response['content'].first
+      item['title'].should == 'Acme Inc'
+      item['views'].should == 12
+      item['path'].should  == '/'
+      item['host'].should  == 'acme.com'
+    end
+  end
+
+  describe "#referrers" do
+    before do
+      stub_get('http://api.gaug.es/gauges/45ab67cd/referrers', :referrers)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.referrers('45ab67cd')
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns a hash with referrers as the primary key" do
+      @response.should be_an_instance_of(Hash)
+      @response['referrers'].size.should be(1)
+
+      item = @response['referrers'].first
+      item['url'].should == 'http://acme.com/'
+      item['views'].should == 6
+      item['path'].should  == '/'
+      item['host'].should  == 'example.com'
+    end
+  end
+
+  describe "#traffic" do
+    before do
+      stub_get('http://api.gaug.es/gauges/45ab67cd/traffic', :traffic)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.traffic('45ab67cd')
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns a hash with traffic as the primary key" do
+      @response.should be_an_instance_of(Hash)
+      @response['traffic'].size.should be(1)
+
+      item = @response['traffic'].first
+      item['date'].should   == Date.parse('2011-10-1')
+      item['views'].should  == 119
+      item['people'].should == 30
+    end
+  end
+
+  describe "#resolutions" do
+    before do
+      stub_get('http://api.gaug.es/gauges/45ab67cd/resolutions', :resolutions)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.resolutions('45ab67cd')
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns a hash with browser_heights, browser_widths, and screen_widths" do
+      @response.should be_an_instance_of(Hash)
+      @response['browser_heights'].size.should be(5)
+      @response['browser_widths'].size.should be(8)
+      @response['screen_widths'].size.should be(8)
+
+      browser_height = @response['browser_heights'].first
+      browser_height['title'].should == '600'
+      browser_height['views'].should == 692
+
+      browser_width = @response['browser_widths'].first
+      browser_width['title'].should == '1280'
+      browser_width['views'].should == 703
+
+      screen_width = @response['screen_widths'].first
+      screen_width['title'].should == '1600'
+      screen_width['views'].should == 760
+    end
+  end
+
+  describe "#technology" do
+    before do
+      stub_get('http://api.gaug.es/gauges/45ab67cd/technology', :technology)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.technology('45ab67cd')
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns a hash with browsers and platforms" do
+      @response.should be_an_instance_of(Hash)
+      @response['browsers'].size.should be(6)
+      @response['platforms'].size.should be(7)
+
+      browser = @response['browsers'].first
+      browser['title'].should == 'Chrome'
+      browser['views'].should == 1062
+      browser['versions'].first['title'].should == "14.0"
+      browser['versions'].first['views'].should == 866
+
+      platform = @response['platforms'].first
+      platform['title'].should == 'Macintosh'
+      platform['views'].should == 1371
+      platform['key'].should   == 'macintosh'
+    end
+  end
+
+  describe "#terms" do
+    before do
+      stub_get('http://api.gaug.es/gauges/45ab67cd/terms', :terms)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.terms('45ab67cd')
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns a hash with terms as the primary key" do
+      @response.should be_an_instance_of(Hash)
+      @response['terms'].size.should be(1)
+
+      item = @response['terms'].first
+      item['term'].should == 'acme products'
+      item['views'].should == 6
+    end
+  end
+
+  describe "#engines" do
+    before do
+      stub_get('http://api.gaug.es/gauges/45ab67cd/engines', :engines)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.engines('45ab67cd')
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns a hash with engines as the primary key" do
+      @response.should be_an_instance_of(Hash)
+      @response['engines'].size.should be(3)
+
+      item = @response['engines'].first
+      item['title'].should == 'Google'
+      item['views'].should == 51
+      item['key'].should   == 'google'
+    end
+  end
+
+  describe "#locations" do
+    before do
+      stub_get('http://api.gaug.es/gauges/45ab67cd/locations', :locations)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.locations('45ab67cd')
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns a hash with locations as the primary key" do
+      @response.should be_an_instance_of(Hash)
+      @response['locations'].size.should be(1)
+
+      item = @response['locations'].first
+      item['key'].should == 'US'
+      item['regions'].first['title'].should == 'Washington'
+      item['regions'].first['views'].should == 8
+      item['regions'].first['key'].should == 'WA'
+    end
+  end
 end

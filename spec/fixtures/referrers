@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+Connection: keep-alive
+
+{"prev_page_path":"","referrers":[{"url":"http://acme.com/","views":6,"path":"/","host":"example.com"}],"date":"2011-10-18","page":1,"next_path":"","per_page":50,"prev_path":"/sites/45ab67cd/referrers?date=2011-10-17","next_page_path":""}

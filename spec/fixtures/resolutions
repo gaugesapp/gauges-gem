@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+Connection: keep-alive
+
+{"browser_heights":[{"title":"600","views":692},{"title":"768","views":466},{"title":"900","views":397},{"title":"1024","views":365},{"title":"480","views":164}],"screen_widths":[{"title":"1600","views":760},{"title":"1280","views":586},{"title":"1440","views":313},{"title":"2000","views":280},{"title":"1024","views":83},{"title":"480","views":49},{"title":"320","views":10},{"title":"800","views":3}],"date":"2011-10-18","next_path":"","browser_widths":[{"title":"1280","views":703},{"title":"1024","views":601},{"title":"1600","views":429},{"title":"1440","views":223},{"title":"800","views":76},{"title":"2000","views":37},{"title":"480","views":14},{"title":"320","views":1}],"prev_path":"/sites/45ab67cd/resolutions?date=2011-09-01"}
