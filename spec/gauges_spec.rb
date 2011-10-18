@@ -453,17 +453,13 @@ describe Gauges do
 
   describe "#users" do
     before do
-      stub_get('http://api.gaug.es/gauges/1234/users', :users)
+      stub_get('http://api.gaug.es/gauges/45ab67cd/users', :users)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.users(1234)
+      @response = @client.users('45ab67cd')
     end
 
     it "returns 200" do
       @response.code.should == 200
-    end
-
-    it "returns Hash" do
-      @response.should be_instance_of(Hash)
     end
 
     it "returns a users hash" do
