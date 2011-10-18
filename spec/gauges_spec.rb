@@ -121,7 +121,7 @@ describe Gauges do
       @response = @client.clients
     end
 
-    it "returns an array of clients" do
+    it "returns a clients hash" do
       @response.should be_instance_of(Hash)
       @response['clients'].size.should be(1)
 
@@ -228,7 +228,7 @@ describe Gauges do
       @response.code.should == 200
     end
 
-    it "returns array" do
+    it "returns Hash" do
       @response.should be_instance_of(Hash)
     end
 
