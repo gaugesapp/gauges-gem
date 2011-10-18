@@ -1,10 +1,5 @@
 HTTP/1.1 401 Authorization Required
-Date: Sun, 03 Jul 2011 15:37:12 GMT
-Server: Apache/2.2.14 (Ubuntu)
-X-Powered-By: Phusion Passenger (mod_rails/mod_rack) 3.0.6
-X-Runtime: 0.187227
-Status: 401
-Connection: close
 Content-Type: application/json
+Connection: close
 
 {"status":"fail","message":"Authentication required"}

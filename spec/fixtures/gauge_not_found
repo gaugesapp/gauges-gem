@@ -1,11 +1,5 @@
 HTTP/1.1 404 Not Found
-Date: Tue, 16 Aug 2011 17:43:20 GMT
-Server: Apache/2.2.14 (Ubuntu)
-X-Powered-By: Phusion Passenger (mod_rails/mod_rack) 3.0.6
-X-Runtime: 0.185613
-Set-Cookie: rack.session=BAh7AA%3D%3D%0A--ec3ba6a2c83f2dc155420e85f25335320848a463; path=/; expires=Tue, 23-Aug-2011 17:43:20 GMT
-Status: 404
-Connection: close
 Content-Type: application/json
+Connection: close
 
 {"status":"fail","message":"Not found"}
