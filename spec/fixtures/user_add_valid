@@ -1,0 +1,5 @@
+HTTP/1.1 200 Created
+Content-Type: application/json
+Connection: close
+
+{"invites":[],"users":[{"name":"John Doe","id":"a1b2c3","email":"john@doe.com"},{"name":"greg@acme.com","id":"l9k8j7","email":"greg@acme.com"}]}

@@ -474,6 +474,66 @@ describe Gauges do
     end
   end
 
+  describe "#add_user" do
+    context "valid" do
+      before do
+        stub_post('http://api.gaug.es/gauges/45ab67cd/users', :user_add_valid)
+        @client   = Gauges.new(:token => 'asdf')
+        @response = @client.add_user('45ab67cd', {:email => 'greg@acme.com'})
+      end
+
+      it "returns 200" do
+        @response.code.should == 200
+      end
+
+      it "returns hash with invites and users arrays" do
+        @response.should be_an_instance_of(Hash)
+        @response['invites'].size.should be(0)
+        @response['users'].size.should be(2)
+      end
+    end
+
+    context "invalid" do
+      before do
+        stub_post('http://api.gaug.es/gauges/45ab67cd/users', :user_add_invalid)
+        @client   = Gauges.new(:token => 'asdf')
+        @response = @client.add_user('45ab67cd', {:email => 'greg@acme'})
+      end
+
+      it "returns 422" do
+        @response.code.should == 422
+      end
+
+      it "returns hash errors and full_messages array" do
+        @response.should be_an_instance_of(Hash)
+
+        @response['errors'].should have_key('email')
+        @response['errors']['email'].should == "does not appear to be legit"
+
+        @response['full_messages'].size.should be(1)
+        @response['full_messages'].first.should == "Email does not appear to be legit"
+      end
+    end
+  end
+
+  describe "#remove_user" do
+    before do
+      stub_delete('http://api.gaug.es/gauges/45ab67cd/users/ab12cd', :user_remove)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.remove_user('45ab67cd', 'ab12cd')
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns hash with invites and users arrays" do
+      @response.should be_an_instance_of(Hash)
+      @response['invites'].size.should be(0)
+      @response['users'].size.should be(1)
+    end
+  end
+
   describe "#content" do
     before do
       stub_get('http://api.gaug.es/gauges/45ab67cd/content', :content)

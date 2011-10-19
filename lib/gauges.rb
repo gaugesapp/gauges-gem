@@ -59,6 +59,15 @@ class Gauges
     get("/gauges/#{id}/users")
   end
 
+  # :email => The email of the user to add
+  def add_user(id, params={})
+    post("/gauges/#{id}/users", params)
+  end
+
+  def remove_user(id, user_id)
+    delete("/gauges/#{id}/users/#{user_id}")
+  end
+
   def content(id, params={})
     get("/gauges/#{id}/content", params)
   end
