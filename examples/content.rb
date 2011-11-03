@@ -4,7 +4,7 @@ require 'rubygems'
 require 'gauges'
 
 id = '4d5f4992089bb618a2000005'
-ga = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
+ga = Gauges.new(:token => '...')
 
 response = ga.content(id)
 pp response['content'].size

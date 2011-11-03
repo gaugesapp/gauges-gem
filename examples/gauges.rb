@@ -3,7 +3,7 @@ require 'pp'
 require 'rubygems'
 require 'gauges'
 
-ga = Gauges.new(:email => 'john@orderedlist.com', :password => 'testing')
+ga = Gauges.new(:token => '...')
 
 puts 'Listing gauges'
 pp ga.gauges.map { |gauge| gauge['title'] }
