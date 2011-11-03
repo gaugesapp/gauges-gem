@@ -1,5 +1,0 @@
-HTTP/1.1 422 Unprocessable Entity
-Content-Type: application/json
-Connection: keep-alive
-
-{"errors":{"email":"does not appear to be legit"},"full_messages":["Email does not appear to be legit"]}

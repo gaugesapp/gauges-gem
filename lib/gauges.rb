@@ -55,17 +55,17 @@ class Gauges
     delete("/gauges/#{id}")
   end
 
-  def users(id)
-    get("/gauges/#{id}/users")
+  def shares(id)
+    get("/gauges/#{id}/shares")
   end
 
   # :email => The email of the user to add
-  def add_user(id, params={})
-    post("/gauges/#{id}/users", params)
+  def share(id, params={})
+    post("/gauges/#{id}/shares", params)
   end
 
-  def remove_user(id, user_id)
-    delete("/gauges/#{id}/users/#{user_id}")
+  def unshare(id, user_id)
+    delete("/gauges/#{id}/shares/#{user_id}")
   end
 
   def content(id, params={})

@@ -2,4 +2,4 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 Connection: keep-alive
 
-{"user":{"name":"John Nunemaker","gauges":[{"id":"4e038e0ebcd1b32016000007"},{"id":"4e0902b3bcd1b379ec000001","owner":true}],"id":"4e038e0dbcd1b32016000002","last_name":"Nunemaker","first_name":"John","email":"john@orderedlist.com"}}
+{"user":{"name":"john@doe.com","urls":{"self":"https://secure.gaug.es/me","gauges":"https://secure.gaug.es/gauges","clients":"https://secure.gaug.es/clients"},"id":"4df37acbe5947cabdd000001","last_name":null,"email":"john@doe.com","first_name":Joe}}

@@ -102,15 +102,14 @@ describe Gauges do
     end
 
     it "returns my own information" do
-      @response['user']['id'].should          == '4e109addbcd1b358f2000001'
-      @response['user']['name'].should        == 'John Nunemaker'
-      @response['user']['email'].should       == 'john@orderedlist.com'
-      @response['user']['first_name'].should  == 'John'
-      @response['user']['last_name'].should   == 'Nunemaker'
-      @response['user']['gauges'].should == [
-        {'id' => '4e109b34bcd1b358f2000003', 'owner' => true},
-        {'id' => '4e109b33bcd1b358f2000002'},
-      ]
+      @response['user']['id'].should          == '4df37acbe5947cabdd000001'
+      @response['user']['name'].should        == 'john@doe.com'
+      @response['user']['email'].should       == 'john@doe.com'
+      @response['user']['first_name'].should  == nil
+      @response['user']['last_name'].should   == nil
+      @response['user']['urls']['self'].should        == 'https://secure.gaug.es/me'
+      @response['user']['urls']['gauges'].should      == 'https://secure.gaug.es/gauges'
+      @response['user']['urls']['clients'].should     == 'https://secure.gaug.es/clients'
     end
   end
 
@@ -126,9 +125,10 @@ describe Gauges do
       @response['clients'].size.should be(1)
 
       client = @response['clients'].first
-      client['key'].should          == 'asdf'
-      client['created_at'].should   == Time.utc(2011, 7, 3, 15, 38, 28)
+      client['key'].should          == '6c6b748646bb371a0027683cda32b7ff'
+      client['created_at'].should   == Time.utc(2011, 11, 2, 15, 17, 53)
       client['description'].should  == 'HipChat'
+      client['urls']['self'].should == 'https://secure.gaug.es/clients/6c6b748646bb371a0027683cda32b7ff'
     end
   end
 
@@ -146,17 +146,18 @@ describe Gauges do
     it "returns created client" do
       @response.should be_instance_of(Hash)
 
-      @response['client']['key'].should         == 'asdf'
+      @response['client']['key'].should         == '6c6b748646bb371a0027683cda32b7ff'
       @response['client']['description'].should == 'HipChat'
-      @response['client']['created_at'].should  == Time.utc(2011, 7, 3, 15, 38, 28)
+      @response['client']['created_at'].should  == Time.utc(2011, 11, 2, 15, 17, 53)
+      @response['client']['urls']['self'].should == 'https://secure.gaug.es/clients/6c6b748646bb371a0027683cda32b7ff'
     end
   end
 
   describe "#delete_client" do
     before do
-      stub_delete('http://api.gaug.es/clients/acb5a1d9dcf209a3a382da61b860278f', :client_delete)
+      stub_delete('http://api.gaug.es/clients/6c6b748646bb371a0027683cda32b7ff', :client_delete)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.delete_client('acb5a1d9dcf209a3a382da61b860278f')
+      @response = @client.delete_client('6c6b748646bb371a0027683cda32b7ff')
     end
 
     it "returns 200" do
@@ -164,9 +165,10 @@ describe Gauges do
     end
 
     it "returns client" do
-      @response['client']['key'].should         == 'acb5a1d9dcf209a3a382da61b860278f'
-      @response['client']['description'].should == 'Testing'
-      @response['client']['created_at'].should  == Time.parse('2011-08-16T16:31:23Z')
+      @response['client']['key'].should         == '6c6b748646bb371a0027683cda32b7ff'
+      @response['client']['description'].should == 'HipChat'
+      @response['client']['created_at'].should  == Time.utc(2011, 11, 2, 15, 17, 53)
+      @response['client']['urls']['self'].should == 'https://secure.gaug.es/clients/6c6b748646bb371a0027683cda32b7ff'
     end
   end
 
@@ -184,35 +186,14 @@ describe Gauges do
 
       it "returns update user" do
         @response.should be_instance_of(Hash)
-        @response['user']['id'].should          == '4e038e0dbcd1b32016000002'
-        @response['user']['name'].should        == 'John Nunemaker'
-        @response['user']['first_name'].should  == 'John'
-        @response['user']['last_name'].should   == 'Nunemaker'
-        @response['user']['email'].should       == 'john@orderedlist.com'
-        @response['user']['gauges'].should      == [
-          {'id' => '4e038e0ebcd1b32016000007'},
-          {'id' => '4e0902b3bcd1b379ec000001', 'owner' => true},
-        ]
-      end
-    end
-
-    context "invalid" do
-      before do
-        stub_put('http://api.gaug.es/me', :me_update_invalid)
-        @client   = Gauges.new(:token => 'asdf')
-        @response = @client.update_me(:email => 'asdf')
-      end
-
-      it "returns 422" do
-        @response.code.should == 422
-      end
-
-      it "returns errors" do
-        @response['errors']['email'].should == 'does not appear to be legit'
-      end
-
-      it "returns full messages" do
-        @response['full_messages'].should   == ['Email does not appear to be legit']
+        @response['user']['id'].should          == '4df37acbe5947cabdd000001'
+        @response['user']['name'].should        == 'john@doe.com'
+        @response['user']['first_name'].should  == 'Joe'
+        @response['user']['last_name'].should   == nil
+        @response['user']['email'].should       == 'john@doe.com'
+        @response['user']['urls']['self'].should    == 'https://secure.gaug.es/me'
+        @response['user']['urls']['gauges'].should  == 'https://secure.gaug.es/gauges'
+        @response['user']['urls']['clients'].should == 'https://secure.gaug.es/clients'
       end
     end
   end
@@ -235,81 +216,99 @@ describe Gauges do
     it "returns gauges" do
       gauge = @response['gauges'][0]
 
-      gauge['title'].should         == 'RailsTips'
-      gauge['service_value'].should == 'railstips.org'
+      gauge['title'].should         == 'acme.com'
       gauge['tz'].should            == 'Eastern Time (US & Canada)'
-      gauge['id'].should            == '4d5f4992089bb618a2000005'
-      gauge['creator_id'].should    == '4d58a6800184f6792e000001'
-      gauge['now_in_zone'].should   == Time.parse('Tue Jul 05 10:40:14 -0400 2011')
+      gauge['id'].should            == '4d597dfd6bb4ba2c48000003'
+      gauge['creator_id'].should    == '4df37acbe5947cabdd000001'
+      gauge['now_in_zone'].should   == Time.parse('Wed Nov 02 21:11:53 -0400 2011')
       gauge['enabled'].should       == true
-      gauge['recent_months'].should == [
-        {"views" => 4324,  "date" => "2011-07", "people" => 2103},
-        {"views" => 42613, "date" => "2011-06", "people" => 22766},
-        {"views" => 39540, "date" => "2011-05", "people" => 19561},
-        {"views" => 37741, "date" => "2011-04", "people" => 17632},
-        {"views" => 59252, "date" => "2011-03", "people" => 28867},
-        {"views" => 19039, "date" => "2011-02", "people" => 10406},
-      ]
-      gauge['all_time'].should      == {"views" => 202509, "people" => 96293}
-      gauge['today'].should         == {"views" => 551,  "date" => Date.new(2011, 7, 5), "people" => 379}
-      gauge['yesterday'].should     == {"views" => 1156, "date" => Date.new(2011, 7, 4), "people" => 724}
+
+      gauge['urls']["self"].should        == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003"
+      gauge['urls']["shares"].should      == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares"
+      gauge['urls']["referrers"].should   == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/referrers"
+      gauge['urls']["technology"].should  == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/technology"
+      gauge['urls']["content"].should     == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/content"
+      gauge['urls']["locations"].should   == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/locations"
+      gauge['urls']["engines"].should     == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/engines"
+      gauge['urls']["terms"].should       == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/terms"
+      gauge['urls']["resolutions"].should == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/resolutions"
+      gauge['urls']["traffic"].should     == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/traffic"
+
+      gauge['all_time'].should      == {"views" => 8259, "people" => 5349}
+      gauge['today'].should         == {"date" => Date.new(2011, 11, 2), "views" => 53, "people" => 29}
+      gauge['yesterday'].should     == {"date" => Date.new(2011, 11, 1), "views" => 137, "people" => 72}
+
       gauge['recent_hours'].should  == [
-        {"hour" => "10", "views" => 64, "people" => 56},
-        {"hour" => "09", "views" => 68, "people" => 57},
-        {"hour" => "08", "views" => 60, "people" => 45},
-        {"hour" => "07", "views" => 34, "people" => 31},
-        {"hour" => "06", "views" => 45, "people" => 39},
-        {"hour" => "05", "views" => 55, "people" => 43},
-        {"hour" => "04", "views" => 52, "people" => 45},
-        {"hour" => "03", "views" => 51, "people" => 38},
-        {"hour" => "02", "views" => 46, "people" => 35},
-        {"hour" => "01", "views" => 37, "people" => 32},
-        {"hour" => "00", "views" => 39, "people" => 25},
-        {"hour" => "23", "views" => 38, "people" => 29},
-        {"hour" => "22", "views" => 44, "people" => 26},
-        {"hour" => "21", "views" => 27, "people" => 25},
-        {"hour" => "20", "views" => 32, "people" => 21},
-        {"hour" => "19", "views" => 41, "people" => 21},
-        {"hour" => "18", "views" => 33, "people" => 22},
-        {"hour" => "17", "views" => 54, "people" => 31},
-        {"hour" => "16", "views" => 43, "people" => 34},
-        {"hour" => "15", "views" => 45, "people" => 36},
-        {"hour" => "14", "views" => 65, "people" => 50},
-        {"hour" => "13", "views" => 67, "people" => 46},
-        {"hour" => "12", "views" => 51, "people" => 32},
-        {"hour" => "11", "views" => 77, "people" => 52},
+        {"hour"=>"21", "views"=>0,  "people"=>0},
+        {"hour"=>"20", "views"=>0,  "people"=>0},
+        {"hour"=>"19", "views"=>0,  "people"=>0},
+        {"hour"=>"18", "views"=>0,  "people"=>0},
+        {"hour"=>"17", "views"=>0,  "people"=>0},
+        {"hour"=>"16", "views"=>0,  "people"=>0},
+        {"hour"=>"15", "views"=>0,  "people"=>0},
+        {"hour"=>"14", "views"=>0,  "people"=>0},
+        {"hour"=>"13", "views"=>0,  "people"=>0},
+        {"hour"=>"12", "views"=>0,  "people"=>0},
+        {"hour"=>"11", "views"=>1,  "people"=>1},
+        {"hour"=>"10", "views"=>8,  "people"=>4},
+        {"hour"=>"09", "views"=>12, "people"=>9},
+        {"hour"=>"08", "views"=>9,  "people"=>6},
+        {"hour"=>"07", "views"=>1,  "people"=>0},
+        {"hour"=>"06", "views"=>4,  "people"=>3},
+        {"hour"=>"05", "views"=>3,  "people"=>0},
+        {"hour"=>"04", "views"=>0,  "people"=>0},
+        {"hour"=>"03", "views"=>1,  "people"=>1},
+        {"hour"=>"02", "views"=>7,  "people"=>4},
+        {"hour"=>"01", "views"=>3,  "people"=>3},
+        {"hour"=>"00", "views"=>4,  "people"=>2},
+        {"hour"=>"23", "views"=>15, "people"=>6},
+        {"hour"=>"22", "views"=>7,  "people"=>5}
       ]
+
       gauge['recent_days'].should   == [
-        {"views" => 551,  "date" => Date.new(2011, 7, 5),  "people" => 379},
-        {"views" => 1156, "date" => Date.new(2011, 7, 4),  "people" => 724},
-        {"views" => 731,  "date" => Date.new(2011, 7, 3),  "people" => 465},
-        {"views" => 660,  "date" => Date.new(2011, 7, 2),  "people" => 412},
-        {"views" => 1226, "date" => Date.new(2011, 7, 1),  "people" => 780},
-        {"views" => 1350, "date" => Date.new(2011, 6, 30), "people" => 908},
-        {"views" => 1589, "date" => Date.new(2011, 6, 29), "people" => 1058},
-        {"views" => 2134, "date" => Date.new(2011, 6, 28), "people" => 1487},
-        {"views" => 1545, "date" => Date.new(2011, 6, 27), "people" => 1067},
-        {"views" => 922,  "date" => Date.new(2011, 6, 26), "people" => 590},
-        {"views" => 801,  "date" => Date.new(2011, 6, 25), "people" => 514},
-        {"views" => 1375, "date" => Date.new(2011, 6, 24), "people" => 905},
-        {"views" => 1964, "date" => Date.new(2011, 6, 23), "people" => 1273},
-        {"views" => 5188, "date" => Date.new(2011, 6, 22), "people" => 3879},
-        {"views" => 1464, "date" => Date.new(2011, 6, 21), "people" => 1030},
-        {"views" => 1414, "date" => Date.new(2011, 6, 20), "people" => 989},
-        {"views" => 821,  "date" => Date.new(2011, 6, 19), "people" => 510},
-        {"views" => 920,  "date" => Date.new(2011, 6, 18), "people" => 562},
-        {"views" => 1484, "date" => Date.new(2011, 6, 17), "people" => 849},
-        {"views" => 1330, "date" => Date.new(2011, 6, 16), "people" => 902},
-        {"views" => 1431, "date" => Date.new(2011, 6, 15), "people" => 928},
-        {"views" => 1780, "date" => Date.new(2011, 6, 14), "people" => 1000},
-        {"views" => 1279, "date" => Date.new(2011, 6, 13), "people" => 907},
-        {"views" => 806,  "date" => Date.new(2011, 6, 12), "people" => 498},
-        {"views" => 642,  "date" => Date.new(2011, 6, 11), "people" => 436},
-        {"views" => 1161, "date" => Date.new(2011, 6, 10), "people" => 771},
-        {"views" => 1463, "date" => Date.new(2011, 6, 9),  "people" => 904},
-        {"views" => 1440, "date" => Date.new(2011, 6, 8),  "people" => 976},
-        {"views" => 1354, "date" => Date.new(2011, 6, 7),  "people" => 886},
-        {"views" => 1327, "date" => Date.new(2011, 6, 6),  "people" => 909},
+        {"views" => 53,  "date" => Date.new(2011, 11, 02), "people" => 29},
+        {"views" => 137, "date" => Date.new(2011, 11, 01), "people" => 72},
+        {"views" => 154, "date" => Date.new(2011, 10, 31), "people" => 108},
+        {"views" => 70,  "date" => Date.new(2011, 10, 30), "people" => 39},
+        {"views" => 310, "date" => Date.new(2011, 10, 29), "people" => 186},
+        {"views" => 360, "date" => Date.new(2011, 10, 28), "people" => 233},
+        {"views" => 16,  "date" => Date.new(2011, 10, 27), "people" => 11},
+        {"views" => 17,  "date" => Date.new(2011, 10, 26), "people" => 12},
+        {"views" => 19,  "date" => Date.new(2011, 10, 25), "people" => 13},
+        {"views" => 10,  "date" => Date.new(2011, 10, 24), "people" => 9},
+        {"views" => 2,   "date" => Date.new(2011, 10, 23), "people" => 2},
+        {"views" => 6,   "date" => Date.new(2011, 10, 22), "people" => 6},
+        {"views" => 19,  "date" => Date.new(2011, 10, 21), "people" => 11},
+        {"views" => 65,  "date" => Date.new(2011, 10, 20), "people" => 49},
+        {"views" => 13,  "date" => Date.new(2011, 10, 19), "people" => 11},
+        {"views" => 8,   "date" => Date.new(2011, 10, 18), "people" => 5},
+        {"views" => 22,  "date" => Date.new(2011, 10, 17), "people" => 18},
+        {"views" => 24,  "date" => Date.new(2011, 10, 16), "people" => 16},
+        {"views" => 133, "date" => Date.new(2011, 10, 15), "people" => 113},
+        {"views" => 366, "date" => Date.new(2011, 10, 14), "people" => 335},
+        {"views" => 27,  "date" => Date.new(2011, 10, 13), "people" => 19},
+        {"views" => 19,  "date" => Date.new(2011, 10, 12), "people" => 13},
+        {"views" => 17,  "date" => Date.new(2011, 10, 11), "people" => 9},
+        {"views" => 80,  "date" => Date.new(2011, 10, 10), "people" => 46},
+        {"views" => 33,  "date" => Date.new(2011, 10, 9), "people" => 8},
+        {"views" => 20,  "date" => Date.new(2011, 10, 8), "people" => 9},
+        {"views" => 29,  "date" => Date.new(2011, 10, 7), "people" => 16},
+        {"views" => 143, "date" => Date.new(2011, 10, 6), "people" => 83},
+        {"views" => 29,  "date" => Date.new(2011, 10, 5), "people" => 24},
+        {"views" => 89,  "date" => Date.new(2011, 10, 4), "people" => 45}
+      ]
+
+      gauge['recent_months'].should == [
+        {"views" => 190,  "date" => Date.new(2011, 11, 1), "people" => 82},
+        {"views" => 2452, "date" => Date.new(2011, 10, 1), "people" => 1517},
+        {"views" => 868,  "date" => Date.new(2011, 9, 1),  "people" => 488},
+        {"views" => 562,  "date" => Date.new(2011, 8, 1),  "people" => 269},
+        {"views" => 3287, "date" => Date.new(2011, 7, 1),  "people" => 2640},
+        {"views" => 224,  "date" => Date.new(2011, 6, 1),  "people" => 133},
+        {"views" => 143,  "date" => Date.new(2011, 5, 1),  "people" => 105},
+        {"views" => 86,   "date" => Date.new(2011, 4, 1),  "people" => 52},
+        {"views" => 367,  "date" => Date.new(2011, 3, 1),  "people" => 144},
+        {"views" => 80,   "date" => Date.new(2011, 2, 1),  "people" => 44}
       ]
     end
   end
@@ -320,8 +319,7 @@ describe Gauges do
         stub_post('http://api.gaug.es/gauges', :gauge_create_valid)
         @client   = Gauges.new(:token => 'asdf')
         @response = @client.create_gauge({
-          :title          => 'Testing',
-          :service_value  => 'testing.com',
+          :title          => 'Example',
           :tz             => 'Eastern Time (US & Canada)'
         })
       end
@@ -331,13 +329,23 @@ describe Gauges do
       end
 
       it "returns gauge" do
-        @response['gauge']['title'].should         == 'Testing'
-        @response['gauge']['service_value'].should == 'testing.com'
+        @response['gauge']['title'].should         == 'Example'
         @response['gauge']['tz'].should            == 'Eastern Time (US & Canada)'
-        @response['gauge']['id'].should            == '4e4aa0f84c114f25c1000004'
-        @response['gauge']['creator_id'].should    == '4e485b734c114f083c000001'
-        @response['gauge']['now_in_zone'].should   == Time.parse('2011-08-16T12:55:20-04:00')
+        @response['gauge']['id'].should            == '4eb1eaf5e5947c7408000001'
+        @response['gauge']['creator_id'].should    == '4df37acbe5947cabdd000001'
+        @response['gauge']['now_in_zone'].should   == Time.parse('Wed Nov 02 21:14:29 -0400 2011')
         @response['gauge']['enabled'].should       == true
+
+        @response['gauge']['urls']["self"].should        == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001"
+        @response['gauge']['urls']["shares"].should      == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/shares"
+        @response['gauge']['urls']["referrers"].should   == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/referrers"
+        @response['gauge']['urls']["technology"].should  == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/technology"
+        @response['gauge']['urls']["content"].should     == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/content"
+        @response['gauge']['urls']["locations"].should   == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/locations"
+        @response['gauge']['urls']["engines"].should     == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/engines"
+        @response['gauge']['urls']["terms"].should       == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/terms"
+        @response['gauge']['urls']["resolutions"].should == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/resolutions"
+        @response['gauge']['urls']["traffic"].should     == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/traffic"
       end
     end
 
@@ -369,9 +377,9 @@ describe Gauges do
   describe "#gauge" do
     context "found" do
       before do
-        stub_get('http://api.gaug.es/gauges/4e4aa0f84c114f25c1000004', :gauge)
+        stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003', :gauge)
         @client   = Gauges.new(:token => 'asdf')
-        @response = @client.gauge('4e4aa0f84c114f25c1000004')
+        @response = @client.gauge('4d597dfd6bb4ba2c48000003')
       end
 
       it "returns 200" do
@@ -379,13 +387,23 @@ describe Gauges do
       end
 
       it "returns gauge" do
-        @response['gauge']['title'].should         == 'Testing'
-        @response['gauge']['service_value'].should == 'testing.com'
+        @response['gauge']['title'].should         == 'acme.com'
         @response['gauge']['tz'].should            == 'Eastern Time (US & Canada)'
-        @response['gauge']['id'].should            == '4e4aa0f84c114f25c1000004'
-        @response['gauge']['creator_id'].should    == '4e485b734c114f083c000001'
-        @response['gauge']['now_in_zone'].should   == Time.parse('2011-08-16T12:55:20-04:00')
+        @response['gauge']['id'].should            == '4d597dfd6bb4ba2c48000003'
+        @response['gauge']['creator_id'].should    == '4df37acbe5947cabdd000001'
+        @response['gauge']['now_in_zone'].should   == Time.parse('Wed Nov 02 21:16:06 -0400 2011')
         @response['gauge']['enabled'].should       == true
+
+        @response['gauge']['urls']["self"].should        == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003"
+        @response['gauge']['urls']["shares"].should      == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares"
+        @response['gauge']['urls']["referrers"].should   == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/referrers"
+        @response['gauge']['urls']["technology"].should  == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/technology"
+        @response['gauge']['urls']["content"].should     == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/content"
+        @response['gauge']['urls']["locations"].should   == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/locations"
+        @response['gauge']['urls']["engines"].should     == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/engines"
+        @response['gauge']['urls']["terms"].should       == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/terms"
+        @response['gauge']['urls']["resolutions"].should == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/resolutions"
+        @response['gauge']['urls']["traffic"].should     == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/traffic"
       end
     end
 
@@ -409,9 +427,9 @@ describe Gauges do
 
   describe "#update_gauge" do
     before do
-      stub_put('http://api.gaug.es/gauges/4e4ab1674c114f2cb7000008', :gauge_update)
+      stub_put('http://api.gaug.es/gauges/4eb1eaf5e5947c7408000001', :gauge_update)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.update_gauge('4e4ab1674c114f2cb7000008', :title => 'Testing')
+      @response = @client.update_gauge('4eb1eaf5e5947c7408000001', :title => 'Testing')
     end
 
     it "returns 200" do
@@ -419,21 +437,31 @@ describe Gauges do
     end
 
     it "returns updated gauge" do
-      @response['gauge']['title'].should         == 'Testing'
-      @response['gauge']['service_value'].should == 'testing.com'
+      @response['gauge']['title'].should         == 'New Title'
       @response['gauge']['tz'].should            == 'Eastern Time (US & Canada)'
-      @response['gauge']['id'].should            == '4e4ab1674c114f2cb7000008'
-      @response['gauge']['creator_id'].should    == '4e485b734c114f083c000001'
-      @response['gauge']['now_in_zone'].should   == Time.parse('2011-08-16T14:13:34-04:00')
+      @response['gauge']['id'].should            == '4eb1eaf5e5947c7408000001'
+      @response['gauge']['creator_id'].should    == '4df37acbe5947cabdd000001'
+      @response['gauge']['now_in_zone'].should   == Time.parse('Wed Nov 02 21:18:12 -0400 2011')
       @response['gauge']['enabled'].should       == true
+
+      @response['gauge']['urls']["self"].should        == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001"
+      @response['gauge']['urls']["shares"].should      == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/shares"
+      @response['gauge']['urls']["referrers"].should   == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/referrers"
+      @response['gauge']['urls']["technology"].should  == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/technology"
+      @response['gauge']['urls']["content"].should     == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/content"
+      @response['gauge']['urls']["locations"].should   == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/locations"
+      @response['gauge']['urls']["engines"].should     == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/engines"
+      @response['gauge']['urls']["terms"].should       == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/terms"
+      @response['gauge']['urls']["resolutions"].should == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/resolutions"
+      @response['gauge']['urls']["traffic"].should     == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/traffic"
     end
   end
 
   describe "#delete_gauge" do
     before do
-      stub_delete('http://api.gaug.es/gauges/4e4aa0f84c114f25c1000004', :gauge_delete)
+      stub_delete('http://api.gaug.es/gauges/4eb1eaf5e5947c7408000001', :gauge_delete)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.delete_gauge('4e4aa0f84c114f25c1000004')
+      @response = @client.delete_gauge('4eb1eaf5e5947c7408000001')
     end
 
     it "returns 200" do
@@ -441,21 +469,31 @@ describe Gauges do
     end
 
     it "returns gauge" do
-      @response['gauge']['title'].should         == 'Testing'
-      @response['gauge']['service_value'].should == 'testing.com'
+      @response['gauge']['title'].should         == 'New Title'
       @response['gauge']['tz'].should            == 'Eastern Time (US & Canada)'
-      @response['gauge']['id'].should            == '4e4aa0f84c114f25c1000004'
-      @response['gauge']['creator_id'].should    == '4e485b734c114f083c000001'
-      @response['gauge']['now_in_zone'].should   == Time.parse('2011-08-16T13:56:32-04:00')
+      @response['gauge']['id'].should            == '4eb1eaf5e5947c7408000001'
+      @response['gauge']['creator_id'].should    == '4df37acbe5947cabdd000001'
+      @response['gauge']['now_in_zone'].should   == Time.parse('Wed Nov 02 21:19:08 -0400 2011')
       @response['gauge']['enabled'].should       == true
+
+      @response['gauge']['urls']["self"].should        == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001"
+      @response['gauge']['urls']["shares"].should      == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/shares"
+      @response['gauge']['urls']["referrers"].should   == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/referrers"
+      @response['gauge']['urls']["technology"].should  == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/technology"
+      @response['gauge']['urls']["content"].should     == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/content"
+      @response['gauge']['urls']["locations"].should   == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/locations"
+      @response['gauge']['urls']["engines"].should     == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/engines"
+      @response['gauge']['urls']["terms"].should       == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/terms"
+      @response['gauge']['urls']["resolutions"].should == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/resolutions"
+      @response['gauge']['urls']["traffic"].should     == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001/traffic"
     end
   end
 
-  describe "#users" do
+  describe "#shares" do
     before do
-      stub_get('http://api.gaug.es/gauges/45ab67cd/users', :users)
+      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares', :shares)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.users('45ab67cd')
+      @response = @client.shares('4d597dfd6bb4ba2c48000003')
     end
 
     it "returns 200" do
@@ -464,22 +502,24 @@ describe Gauges do
 
     it "returns a users hash" do
       @response.should be_an_instance_of(Hash)
-      @response['invites'].size.should be(0)
-      @response['users'].size.should be(1)
-
-      user = @response['users'].first
-      user['id'].should     == 'abcdefg'
-      user['name'].should   == 'John Doe'
-      user['email'].should  == 'john@example.com'
+      @response['shares'].length.should == 1
+      share = @response['shares'].first
+      share['name'].should            == "Joe "
+      share['id'].should              == '4df37acbe5947cabdd000001'
+      share['type'].should            == 'user'
+      share['last_name'].should       == nil
+      share['first_name'].should      == 'Joe'
+      share['email'].should           == 'john@doe.com'
+      share['urls']['remove'].should  == 'https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares/4df37acbe5947cabdd000001'
     end
   end
 
-  describe "#add_user" do
+  describe "#share" do
     context "valid" do
       before do
-        stub_post('http://api.gaug.es/gauges/45ab67cd/users', :user_add_valid)
+        stub_post('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares', :share_add_valid)
         @client   = Gauges.new(:token => 'asdf')
-        @response = @client.add_user('45ab67cd', {:email => 'greg@acme.com'})
+        @response = @client.share('4d597dfd6bb4ba2c48000003', {:email => 'greg@acme.com'})
       end
 
       it "returns 200" do
@@ -488,16 +528,22 @@ describe Gauges do
 
       it "returns hash with invites and users arrays" do
         @response.should be_an_instance_of(Hash)
-        @response['invites'].size.should be(0)
-        @response['users'].size.should be(2)
+
+        @response['share']['id'].should             == '4eb1ed03e5947c7408000002'
+        @response['share']['name'].should           == 'jane@doe.com'
+        @response['share']['type'].should           == 'invite'
+        @response['share']['last_name'].should      == nil
+        @response['share']['first_name'].should     == nil
+        @response['share']['email'].should          == 'jane@doe.com'
+        @response['share']['urls']['remove'].should == 'https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares/4eb1ed03e5947c7408000002'
       end
     end
 
     context "invalid" do
       before do
-        stub_post('http://api.gaug.es/gauges/45ab67cd/users', :user_add_invalid)
+        stub_post('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares', :share_add_invalid)
         @client   = Gauges.new(:token => 'asdf')
-        @response = @client.add_user('45ab67cd', {:email => 'greg@acme'})
+        @response = @client.share('4d597dfd6bb4ba2c48000003', {:email => 'greg@acme'})
       end
 
       it "returns 422" do
@@ -516,11 +562,11 @@ describe Gauges do
     end
   end
 
-  describe "#remove_user" do
+  describe "#unshare" do
     before do
-      stub_delete('http://api.gaug.es/gauges/45ab67cd/users/ab12cd', :user_remove)
+      stub_delete('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares/4eb1ed03e5947c7408000002', :share_remove)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.remove_user('45ab67cd', 'ab12cd')
+      @response = @client.unshare('4d597dfd6bb4ba2c48000003', '4eb1ed03e5947c7408000002')
     end
 
     it "returns 200" do
@@ -529,16 +575,22 @@ describe Gauges do
 
     it "returns hash with invites and users arrays" do
       @response.should be_an_instance_of(Hash)
-      @response['invites'].size.should be(0)
-      @response['users'].size.should be(1)
+
+      @response['share']['id'].should             == '4eb1ed03e5947c7408000002'
+      @response['share']['name'].should           == 'jane@doe.com'
+      @response['share']['type'].should           == 'invite'
+      @response['share']['last_name'].should      == nil
+      @response['share']['first_name'].should     == nil
+      @response['share']['email'].should          == 'jane@doe.com'
+      @response['share']['urls']['remove'].should == 'https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares/4eb1ed03e5947c7408000002'
     end
   end
 
   describe "#content" do
     before do
-      stub_get('http://api.gaug.es/gauges/45ab67cd/content', :content)
+      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/content', :content)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.content('45ab67cd')
+      @response = @client.content('4d597dfd6bb4ba2c48000003')
     end
 
     it "returns 200" do
@@ -547,21 +599,26 @@ describe Gauges do
 
     it "returns a hash with content as the primary key" do
       @response.should be_an_instance_of(Hash)
-      @response['content'].size.should be(1)
+      @response['content'].size.should be(8)
 
       item = @response['content'].first
-      item['title'].should == 'Acme Inc'
-      item['views'].should == 12
-      item['path'].should  == '/'
+      item['title'].should == 'HipChat, hubot, and Me // acme.com'
+      item['views'].should == 31
+      item['path'].should  == '/blog/archives/2011/10/28/hipchat-hubot-and-me/'
       item['host'].should  == 'acme.com'
+
+      @response['urls']['older'].should         == 'https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/content?date=2011-11-01'
+      @response['urls']['newer'].should         == nil
+      @response['urls']['previous_page'].should == nil
+      @response['urls']['next_page'].should     == nil
     end
   end
 
   describe "#referrers" do
     before do
-      stub_get('http://api.gaug.es/gauges/45ab67cd/referrers', :referrers)
+      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/referrers', :referrers)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.referrers('45ab67cd')
+      @response = @client.referrers('4d597dfd6bb4ba2c48000003')
     end
 
     it "returns 200" do
@@ -570,21 +627,27 @@ describe Gauges do
 
     it "returns a hash with referrers as the primary key" do
       @response.should be_an_instance_of(Hash)
-      @response['referrers'].size.should be(1)
+      @response['referrers'].size.should be(2)
 
       item = @response['referrers'].first
-      item['url'].should == 'http://acme.com/'
-      item['views'].should == 6
-      item['path'].should  == '/'
-      item['host'].should  == 'example.com'
+      item['url'].should == 'http://martinciu.com/2011/11/deploying-hubot-to-heroku-like-a-boss.html'
+      item['views'].should == 1
+      item['path'].should  == '/2011/11/deploying-hubot-to-heroku-like-a-boss.html'
+      item['host'].should  == 'martinciu.com'
+
+      @response['urls']['older'].should         == 'https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/referrers?date=2011-11-01'
+      @response['urls']['newer'].should         == nil
+      @response['urls']['previous_page'].should == nil
+      @response['urls']['next_page'].should     == nil
+
     end
   end
 
   describe "#traffic" do
     before do
-      stub_get('http://api.gaug.es/gauges/45ab67cd/traffic', :traffic)
+      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/traffic', :traffic)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.traffic('45ab67cd')
+      @response = @client.traffic('4d597dfd6bb4ba2c48000003')
     end
 
     it "returns 200" do
@@ -593,20 +656,26 @@ describe Gauges do
 
     it "returns a hash with traffic as the primary key" do
       @response.should be_an_instance_of(Hash)
-      @response['traffic'].size.should be(1)
+      @response['traffic'].size.should be(2)
 
       item = @response['traffic'].first
-      item['date'].should   == Date.parse('2011-10-1')
-      item['views'].should  == 119
-      item['people'].should == 30
+      item['date'].should   == Date.parse('2011-11-1')
+      item['views'].should  == 137
+      item['people'].should == 72
+
+      @response['urls']['older'].should         == 'https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/traffic?date=2011-10-01'
+      @response['urls']['newer'].should         == nil
+      @response['urls']['previous_page'].should == nil
+      @response['urls']['next_page'].should     == nil
+
     end
   end
 
   describe "#resolutions" do
     before do
-      stub_get('http://api.gaug.es/gauges/45ab67cd/resolutions', :resolutions)
+      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/resolutions', :resolutions)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.resolutions('45ab67cd')
+      @response = @client.resolutions('4d597dfd6bb4ba2c48000003')
     end
 
     it "returns 200" do
@@ -621,23 +690,28 @@ describe Gauges do
 
       browser_height = @response['browser_heights'].first
       browser_height['title'].should == '600'
-      browser_height['views'].should == 692
+      browser_height['views'].should == 69
 
       browser_width = @response['browser_widths'].first
       browser_width['title'].should == '1280'
-      browser_width['views'].should == 703
+      browser_width['views'].should == 56
 
       screen_width = @response['screen_widths'].first
       screen_width['title'].should == '1600'
-      screen_width['views'].should == 760
+      screen_width['views'].should == 58
+
+      @response['urls']['older'].should         == 'https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/resolutions?date=2011-10-01'
+      @response['urls']['newer'].should         == nil
+      @response['urls']['previous_page'].should == nil
+      @response['urls']['next_page'].should     == nil
     end
   end
 
   describe "#technology" do
     before do
-      stub_get('http://api.gaug.es/gauges/45ab67cd/technology', :technology)
+      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/technology', :technology)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.technology('45ab67cd')
+      @response = @client.technology('4d597dfd6bb4ba2c48000003')
     end
 
     it "returns 200" do
@@ -647,26 +721,31 @@ describe Gauges do
     it "returns a hash with browsers and platforms" do
       @response.should be_an_instance_of(Hash)
       @response['browsers'].size.should be(6)
-      @response['platforms'].size.should be(7)
+      @response['platforms'].size.should be(6)
 
       browser = @response['browsers'].first
       browser['title'].should == 'Chrome'
-      browser['views'].should == 1062
-      browser['versions'].first['title'].should == "14.0"
-      browser['versions'].first['views'].should == 866
+      browser['views'].should == 135
+      browser['versions'].first['title'].should == "15.0"
+      browser['versions'].first['views'].should == 95
 
       platform = @response['platforms'].first
       platform['title'].should == 'Macintosh'
-      platform['views'].should == 1371
+      platform['views'].should == 142
       platform['key'].should   == 'macintosh'
+
+      @response['urls']['older'].should         == 'https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/technology?date=2011-10-01'
+      @response['urls']['newer'].should         == nil
+      @response['urls']['previous_page'].should == nil
+      @response['urls']['next_page'].should     == nil
     end
   end
 
   describe "#terms" do
     before do
-      stub_get('http://api.gaug.es/gauges/45ab67cd/terms', :terms)
+      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/terms', :terms)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.terms('45ab67cd')
+      @response = @client.terms('4d597dfd6bb4ba2c48000003')
     end
 
     it "returns 200" do
@@ -675,19 +754,24 @@ describe Gauges do
 
     it "returns a hash with terms as the primary key" do
       @response.should be_an_instance_of(Hash)
-      @response['terms'].size.should be(1)
+      @response['terms'].size.should be(41)
 
-      item = @response['terms'].first
-      item['term'].should == 'acme products'
-      item['views'].should == 6
+      item = @response['terms'][2]
+      item['term'].should == 'hipchat hubot'
+      item['views'].should == 5
+
+      @response['urls']['older'].should         == 'https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/terms?date=2011-10-01'
+      @response['urls']['newer'].should         == nil
+      @response['urls']['previous_page'].should == nil
+      @response['urls']['next_page'].should     == nil
     end
   end
 
   describe "#engines" do
     before do
-      stub_get('http://api.gaug.es/gauges/45ab67cd/engines', :engines)
+      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/engines', :engines)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.engines('45ab67cd')
+      @response = @client.engines('4d597dfd6bb4ba2c48000003')
     end
 
     it "returns 200" do
@@ -696,20 +780,25 @@ describe Gauges do
 
     it "returns a hash with engines as the primary key" do
       @response.should be_an_instance_of(Hash)
-      @response['engines'].size.should be(3)
+      @response['engines'].size.should be(1)
 
       item = @response['engines'].first
       item['title'].should == 'Google'
-      item['views'].should == 51
+      item['views'].should == 90
       item['key'].should   == 'google'
+
+      @response['urls']['older'].should         == 'https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/engines?date=2011-10-01'
+      @response['urls']['newer'].should         == nil
+      @response['urls']['previous_page'].should == nil
+      @response['urls']['next_page'].should     == nil
     end
   end
 
   describe "#locations" do
     before do
-      stub_get('http://api.gaug.es/gauges/45ab67cd/locations', :locations)
+      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/locations', :locations)
       @client   = Gauges.new(:token => 'asdf')
-      @response = @client.locations('45ab67cd')
+      @response = @client.locations('4d597dfd6bb4ba2c48000003')
     end
 
     it "returns 200" do
@@ -718,13 +807,18 @@ describe Gauges do
 
     it "returns a hash with locations as the primary key" do
       @response.should be_an_instance_of(Hash)
-      @response['locations'].size.should be(1)
+      @response['locations'].size.should be(23)
 
       item = @response['locations'].first
       item['key'].should == 'US'
-      item['regions'].first['title'].should == 'Washington'
-      item['regions'].first['views'].should == 8
-      item['regions'].first['key'].should == 'WA'
+      item['regions'].first['title'].should == 'California'
+      item['regions'].first['views'].should == 22
+      item['regions'].first['key'].should   == 'CA'
+
+      @response['urls']['older'].should         == 'https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/locations?date=2011-10-01'
+      @response['urls']['newer'].should         == nil
+      @response['urls']['previous_page'].should == nil
+      @response['urls']['next_page'].should     == nil
     end
   end
 end

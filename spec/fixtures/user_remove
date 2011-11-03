@@ -1,5 +1,0 @@
-HTTP/1.1 200 OK
-Content-Type: application/json
-Connection: keep-alive
-
-{"invites":[],"users":[{"name":"John Doe","id":"a1b2c3","email":"john@doe.com"}]}

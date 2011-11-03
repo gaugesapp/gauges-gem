@@ -2,4 +2,4 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 Connection: close
 
-{"clients":[{"created_at":"2011-07-03T15:38:28Z","description":"HipChat","key":"asdf"}]}
+{"clients":[{"created_at":"2011-11-02T15:17:53Z","urls":{"self":"https://secure.gaug.es/clients/6c6b748646bb371a0027683cda32b7ff"},"description":"HipChat","key":"6c6b748646bb371a0027683cda32b7ff"}]}

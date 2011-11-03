@@ -2,4 +2,4 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 Connection: close
 
-{"user":{"name":"John Nunemaker","gauges":[{"id":"4e109b34bcd1b358f2000003","owner":true},{"id":"4e109b33bcd1b358f2000002"}],"id":"4e109addbcd1b358f2000001","last_name":"Nunemaker","first_name":"John","email":"john@orderedlist.com"}}
+{"user":{"name":"john@doe.com","urls":{"self":"https://secure.gaug.es/me","gauges":"https://secure.gaug.es/gauges","clients":"https://secure.gaug.es/clients"},"id":"4df37acbe5947cabdd000001","last_name":null,"email":"john@doe.com","first_name":null}}

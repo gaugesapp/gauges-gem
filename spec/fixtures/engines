@@ -2,4 +2,4 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 Connection: keep-alive
 
-{"date":"2011-10-18","next_path":"","engines":[{"title":"Google","views":51,"key":"google"},{"title":"Yahoo","views":5,"key":"yahoo"},{"title":"Bing","views":1,"key":"bing"}],"prev_path":"/sites/45ab67cd/engines?date=2011-09-01"}
+{"urls":{"older":"https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/engines?date=2011-10-01","newer":null},"date":"2011-11-02","engines":[{"title":"Google","views":90,"key":"google"}]}
