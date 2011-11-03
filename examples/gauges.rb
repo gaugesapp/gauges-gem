@@ -6,20 +6,19 @@ require 'gauges'
 ga = Gauges.new(:email => 'john@orderedlist.com', :password => 'testing')
 
 puts 'Listing gauges'
-pp ga.gauges.map { |gauge| gauge['service_value'] }
+pp ga.gauges.map { |gauge| gauge['title'] }
 puts
 
 puts 'Creating gauge'
 gauge = ga.create_gauge({
-  :title          => 'Testing',
-  :service_value  => 'testing.com',
-  :tz             => 'Eastern Time (US & Canada)'
+  :title => 'Testing',
+  :tz    => 'Eastern Time (US & Canada)'
 })
 pp gauge['title']
 puts
 
 puts 'Listing gauges'
-pp ga.gauges.map { |gauge| gauge['service_value'] }
+pp ga.gauges.map { |gauge| gauge['title'] }
 puts
 
 puts 'Get gauge'

@@ -309,9 +309,8 @@ describe Gauges do
         stub_post('https://secure.gaug.es/gauges', :gauge_create_invalid)
         @client   = Gauges.new(:token => 'asdf')
         @response = @client.create_gauge({
-          :title          => 'Testing',
-          :service_value  => 'testing.com',
-          :tz             => 'PooPoo'
+          :title => 'Testing',
+          :tz    => 'PooPoo'
         })
       end
 
