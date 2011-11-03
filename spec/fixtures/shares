@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+Connection: keep-alive
+
+{"shares":[{"name":"Joe ","urls":{"remove":"https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares/4df37acbe5947cabdd000001"},"id":"4df37acbe5947cabdd000001","type":"user","last_name":null,"email":"john@doe.com","first_name":"Joe"}]}

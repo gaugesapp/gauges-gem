@@ -3,7 +3,7 @@ require 'httparty'
 class Gauges
   include HTTParty
 
-  base_uri 'api.gaug.es'
+  base_uri 'https://secure.gaug.es'
 
   # :email/:password or :token
   def initialize(options={})
@@ -32,59 +32,72 @@ class Gauges
     delete("/clients/#{id}")
   end
 
-  def sites
-    get('/sites')
+  def gauges
+    get('/gauges')
   end
 
-  # :title          => The title of the site (ie: RailsTips)
-  # :service_value  => The domain of the site (ie: railstips.org)
+  # :title          => The title of the gauge (ie: RailsTips)
+  # :service_value  => The domain of the gauge (ie: railstips.org)
   # :tz             => The time zone stats should be tracked in
-  def create_site(params={})
-    post('/sites', params)
+  def create_gauge(params={})
+    post('/gauges', params)
   end
 
-  def site(id)
-    get("/sites/#{id}")
+  def gauge(id)
+    get("/gauges/#{id}")
   end
 
-  def update_site(id, params={})
-    put("/sites/#{id}", params)
+  def update_gauge(id, params={})
+    put("/gauges/#{id}", params)
   end
 
-  def delete_site(id)
-    delete("/sites/#{id}")
+  def delete_gauge(id)
+    delete("/gauges/#{id}")
+  end
+
+  def shares(id)
+    get("/gauges/#{id}/shares")
+  end
+
+  # :email => The email of the user to add
+  def share(id, params={})
+    post("/gauges/#{id}/shares", params)
+  end
+
+  def unshare(id, user_id)
+    delete("/gauges/#{id}/shares/#{user_id}")
   end
 
   def content(id, params={})
-    get("/sites/#{id}/content", params)
+    get("/gauges/#{id}/content", params)
   end
 
   def referrers(id, params={})
-    get("/sites/#{id}/referrers", params)
+    get("/gauges/#{id}/referrers", params)
   end
 
   def traffic(id, params={})
-    get("/sites/#{id}/traffic", params)
+    get("/gauges/#{id}/traffic", params)
   end
 
   def resolutions(id, params={})
-    get("/sites/#{id}/resolutions", params)
+    get("/gauges/#{id}/resolutions", params)
   end
 
   def technology(id, params={})
-    get("/sites/#{id}/technology", params)
+    get("/gauges/#{id}/technology", params)
   end
 
   def terms(id, params={})
-    get("/sites/#{id}/terms")
+    get("/gauges/#{id}/terms")
   end
 
   def engines(id, params={})
-    get("/sites/#{id}/engines", params)
+    get("/gauges/#{id}/engines", params)
   end
 
   def locations(id, params={})
-    get("/sites/#{id}/locations", params)
+    get("/gauges/#{id}/locations", params)
   end
 
   def email
