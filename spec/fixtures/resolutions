@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+Connection: keep-alive
+
+{"urls":{"older":"https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/resolutions?date=2011-10-01","newer":null},"browser_heights":[{"title":"600","views":69},{"title":"768","views":49},{"title":"1024","views":30},{"title":"900","views":26},{"title":"480","views":14}],"screen_widths":[{"title":"1600","views":58},{"title":"1440","views":55},{"title":"1280","views":29},{"title":"2000","views":27},{"title":"320","views":9},{"title":"480","views":4},{"title":"1024","views":4},{"title":"800","views":2}],"date":"2011-11-02","browser_widths":[{"title":"1280","views":56},{"title":"1024","views":55},{"title":"1440","views":29},{"title":"1600","views":28},{"title":"800","views":8},{"title":"320","views":8},{"title":"480","views":4},{"title":"2000","views":0}]}

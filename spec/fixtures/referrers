@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+Connection: keep-alive
+
+{"referrers":[{"url":"http://martinciu.com/2011/11/deploying-hubot-to-heroku-like-a-boss.html","views":1,"path":"/2011/11/deploying-hubot-to-heroku-like-a-boss.html","host":"martinciu.com"},{"url":"http://www.reddit.com/r/programming/comments/lsluj/hubot_hipchat_and_heroku/","views":1,"path":"/r/programming/comments/lsluj/hubot_hipchat_and_heroku/","host":"reddit.com"}],"urls":{"older":"https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/referrers?date=2011-11-01","previous_page":null,"next_page":null,"newer":null},"date":"2011-11-02","page":1,"per_page":50}

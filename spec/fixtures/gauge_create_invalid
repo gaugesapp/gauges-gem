@@ -1,8 +1,5 @@
 HTTP/1.1 422 Unprocessable Entity
 Content-Type: application/json
-X-Runtime: 0.006463
-Content-Length: 98
-Set-Cookie: rack.session=BAh7AA%3D%3D%0A--ec3ba6a2c83f2dc155420e85f25335320848a463; path=/; expires=Tue, 23-Aug-2011 16:50:27 GMT
 Connection: keep-alive
 
 {"errors":{"tz":"is not included in the list"},"full_messages":["Tz is not included in the list"]}

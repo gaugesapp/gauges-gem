@@ -1,0 +1,5 @@
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+Connection: close
+
+{"status":"fail","message":"Not found"}

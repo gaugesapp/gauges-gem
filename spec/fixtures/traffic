@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+Connection: keep-alive
+
+{"urls":{"older":"https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/traffic?date=2011-10-01","newer":null},"date":"2011-11-02","traffic":[{"date":"2011-11-01","views":137,"people":72},{"date":"2011-11-02","views":53,"people":29}]}

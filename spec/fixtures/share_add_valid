@@ -1,0 +1,5 @@
+HTTP/1.1 200 Created
+Content-Type: application/json
+Connection: close
+
+{"share":{"name":"jane@doe.com","urls":{"remove":"https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares/4eb1ed03e5947c7408000002"},"id":"4eb1ed03e5947c7408000002","type":"invite","last_name":null,"email":"jane@doe.com","first_name":null}}

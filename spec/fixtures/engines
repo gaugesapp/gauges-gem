@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+Connection: keep-alive
+
+{"urls":{"older":"https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/engines?date=2011-10-01","newer":null},"date":"2011-11-02","engines":[{"title":"Google","views":90,"key":"google"}]}
