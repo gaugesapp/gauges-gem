@@ -3,7 +3,7 @@ require 'httparty'
 class Gauges
   include HTTParty
 
-  base_uri 'api.gaug.es'
+  base_uri 'https://secure.gaug.es'
 
   # :email/:password or :token
   def initialize(options={})

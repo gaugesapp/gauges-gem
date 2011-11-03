@@ -43,7 +43,7 @@ describe Gauges do
 
   context "http auth failure" do
     before do
-      stub_get('http://api.gaug.es/clients', :clients_http_auth_failure)
+      stub_get('https://secure.gaug.es/clients', :clients_http_auth_failure)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.clients
     end
@@ -67,7 +67,7 @@ describe Gauges do
 
   context "making request with token" do
     before do
-      stub_get('http://api.gaug.es/me', :me)
+      stub_get('https://secure.gaug.es/me', :me)
       @client = Gauges.new(:token => 'asdf')
     end
 
@@ -81,7 +81,7 @@ describe Gauges do
 
   context "making request with basic auth" do
     before do
-      stub_get('http://api.gaug.es/me', :me)
+      stub_get('https://secure.gaug.es/me', :me)
       @client = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
     end
 
@@ -96,7 +96,7 @@ describe Gauges do
 
   describe "#me" do
     before do
-      stub_get('http://api.gaug.es/me', :me)
+      stub_get('https://secure.gaug.es/me', :me)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.me
     end
@@ -115,7 +115,7 @@ describe Gauges do
 
   describe "#clients" do
     before do
-      stub_get('http://api.gaug.es/clients', :clients)
+      stub_get('https://secure.gaug.es/clients', :clients)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.clients
     end
@@ -134,7 +134,7 @@ describe Gauges do
 
   describe "#create_client" do
     before do
-      stub_post('http://api.gaug.es/clients', :client_create)
+      stub_post('https://secure.gaug.es/clients', :client_create)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.create_client(:description => 'HipChat')
     end
@@ -155,7 +155,7 @@ describe Gauges do
 
   describe "#delete_client" do
     before do
-      stub_delete('http://api.gaug.es/clients/6c6b748646bb371a0027683cda32b7ff', :client_delete)
+      stub_delete('https://secure.gaug.es/clients/6c6b748646bb371a0027683cda32b7ff', :client_delete)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.delete_client('6c6b748646bb371a0027683cda32b7ff')
     end
@@ -175,7 +175,7 @@ describe Gauges do
   describe "#update_me" do
     context "valid" do
       before do
-        stub_put('http://api.gaug.es/me', :me_update)
+        stub_put('https://secure.gaug.es/me', :me_update)
         @client = Gauges.new(:token => 'asdf')
         @response = @client.update_me(:first_name => 'Frank', :last_name => 'Furter')
       end
@@ -200,7 +200,7 @@ describe Gauges do
 
   describe "#gauges" do
     before do
-      stub_get('http://api.gaug.es/gauges', :gauges)
+      stub_get('https://secure.gaug.es/gauges', :gauges)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.gauges
     end
@@ -316,7 +316,7 @@ describe Gauges do
   describe "#create_gauge" do
     context "valid" do
       before do
-        stub_post('http://api.gaug.es/gauges', :gauge_create_valid)
+        stub_post('https://secure.gaug.es/gauges', :gauge_create_valid)
         @client   = Gauges.new(:token => 'asdf')
         @response = @client.create_gauge({
           :title          => 'Example',
@@ -351,7 +351,7 @@ describe Gauges do
 
     context "invalid" do
       before do
-        stub_post('http://api.gaug.es/gauges', :gauge_create_invalid)
+        stub_post('https://secure.gaug.es/gauges', :gauge_create_invalid)
         @client   = Gauges.new(:token => 'asdf')
         @response = @client.create_gauge({
           :title          => 'Testing',
@@ -377,7 +377,7 @@ describe Gauges do
   describe "#gauge" do
     context "found" do
       before do
-        stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003', :gauge)
+        stub_get('https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003', :gauge)
         @client   = Gauges.new(:token => 'asdf')
         @response = @client.gauge('4d597dfd6bb4ba2c48000003')
       end
@@ -409,7 +409,7 @@ describe Gauges do
 
     context "not found" do
       before do
-        stub_get('http://api.gaug.es/gauges/1234', :gauge_not_found)
+        stub_get('https://secure.gaug.es/gauges/1234', :gauge_not_found)
         @client   = Gauges.new(:token => 'asdf')
         @response = @client.gauge('1234')
       end
@@ -427,7 +427,7 @@ describe Gauges do
 
   describe "#update_gauge" do
     before do
-      stub_put('http://api.gaug.es/gauges/4eb1eaf5e5947c7408000001', :gauge_update)
+      stub_put('https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001', :gauge_update)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.update_gauge('4eb1eaf5e5947c7408000001', :title => 'Testing')
     end
@@ -459,7 +459,7 @@ describe Gauges do
 
   describe "#delete_gauge" do
     before do
-      stub_delete('http://api.gaug.es/gauges/4eb1eaf5e5947c7408000001', :gauge_delete)
+      stub_delete('https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001', :gauge_delete)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.delete_gauge('4eb1eaf5e5947c7408000001')
     end
@@ -491,7 +491,7 @@ describe Gauges do
 
   describe "#shares" do
     before do
-      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares', :shares)
+      stub_get('https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares', :shares)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.shares('4d597dfd6bb4ba2c48000003')
     end
@@ -517,7 +517,7 @@ describe Gauges do
   describe "#share" do
     context "valid" do
       before do
-        stub_post('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares', :share_add_valid)
+        stub_post('https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares', :share_add_valid)
         @client   = Gauges.new(:token => 'asdf')
         @response = @client.share('4d597dfd6bb4ba2c48000003', {:email => 'greg@acme.com'})
       end
@@ -541,7 +541,7 @@ describe Gauges do
 
     context "invalid" do
       before do
-        stub_post('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares', :share_add_invalid)
+        stub_post('https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares', :share_add_invalid)
         @client   = Gauges.new(:token => 'asdf')
         @response = @client.share('4d597dfd6bb4ba2c48000003', {:email => 'greg@acme'})
       end
@@ -564,7 +564,7 @@ describe Gauges do
 
   describe "#unshare" do
     before do
-      stub_delete('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares/4eb1ed03e5947c7408000002', :share_remove)
+      stub_delete('https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/shares/4eb1ed03e5947c7408000002', :share_remove)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.unshare('4d597dfd6bb4ba2c48000003', '4eb1ed03e5947c7408000002')
     end
@@ -588,7 +588,7 @@ describe Gauges do
 
   describe "#content" do
     before do
-      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/content', :content)
+      stub_get('https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/content', :content)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.content('4d597dfd6bb4ba2c48000003')
     end
@@ -616,7 +616,7 @@ describe Gauges do
 
   describe "#referrers" do
     before do
-      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/referrers', :referrers)
+      stub_get('https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/referrers', :referrers)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.referrers('4d597dfd6bb4ba2c48000003')
     end
@@ -645,7 +645,7 @@ describe Gauges do
 
   describe "#traffic" do
     before do
-      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/traffic', :traffic)
+      stub_get('https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/traffic', :traffic)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.traffic('4d597dfd6bb4ba2c48000003')
     end
@@ -673,7 +673,7 @@ describe Gauges do
 
   describe "#resolutions" do
     before do
-      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/resolutions', :resolutions)
+      stub_get('https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/resolutions', :resolutions)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.resolutions('4d597dfd6bb4ba2c48000003')
     end
@@ -709,7 +709,7 @@ describe Gauges do
 
   describe "#technology" do
     before do
-      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/technology', :technology)
+      stub_get('https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/technology', :technology)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.technology('4d597dfd6bb4ba2c48000003')
     end
@@ -743,7 +743,7 @@ describe Gauges do
 
   describe "#terms" do
     before do
-      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/terms', :terms)
+      stub_get('https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/terms', :terms)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.terms('4d597dfd6bb4ba2c48000003')
     end
@@ -769,7 +769,7 @@ describe Gauges do
 
   describe "#engines" do
     before do
-      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/engines', :engines)
+      stub_get('https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/engines', :engines)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.engines('4d597dfd6bb4ba2c48000003')
     end
@@ -796,7 +796,7 @@ describe Gauges do
 
   describe "#locations" do
     before do
-      stub_get('http://api.gaug.es/gauges/4d597dfd6bb4ba2c48000003/locations', :locations)
+      stub_get('https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/locations', :locations)
       @client   = Gauges.new(:token => 'asdf')
       @response = @client.locations('4d597dfd6bb4ba2c48000003')
     end
