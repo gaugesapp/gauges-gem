@@ -5,7 +5,7 @@ class Gauges
 
   base_uri 'https://secure.gaug.es'
 
-  # :email/:password or :token
+  # :token => http://get.gaug.es/documentation/api/authentication/
   def initialize(options={})
     @options = options
   end
@@ -14,7 +14,7 @@ class Gauges
     get('/me')
   end
 
-  # email, password, first_name, last_name
+  # :first_name, :last_name
   def update_me(params={})
     put('/me', params)
   end
@@ -36,9 +36,8 @@ class Gauges
     get('/gauges')
   end
 
-  # :title          => The title of the gauge (ie: RailsTips)
-  # :service_value  => The domain of the gauge (ie: railstips.org)
-  # :tz             => The time zone stats should be tracked in
+  # :title => The title of the gauge (ie: RailsTips)
+  # :tz    => The time zone stats should be tracked in
   def create_gauge(params={})
     post('/gauges', params)
   end
@@ -100,24 +99,8 @@ class Gauges
     get("/gauges/#{id}/locations", params)
   end
 
-  def email
-    @options[:email]
-  end
-
-  def password
-    @options[:password]
-  end
-
   def token
     @options[:token]
-  end
-
-  def basic_auth?
-    @options.key?(:email) && @options.key?(:password)
-  end
-
-  def header_auth?
-    !basic_auth?
   end
 
 private
@@ -138,17 +121,8 @@ private
   end
 
   def options(hash={})
-    if basic_auth?
-      hash.merge!(:basic_auth => basic_auth)
-    else
-      hash[:headers] ||= {}
-      hash[:headers]['X-Gauges-Token'] = token
-    end
-
+    hash[:headers] ||= {}
+    hash[:headers]['X-Gauges-Token'] = token
     hash
-  end
-
-  def basic_auth
-    {:username => email, :password => password}
   end
 end

@@ -1,28 +1,6 @@
 require 'helper'
 
 describe Gauges do
-  context "initializing with email and password" do
-    before do
-      @client = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
-    end
-
-    it "sets email" do
-      @client.email.should == 'john@orderedlist.com'
-    end
-
-    it "sets password" do
-      @client.password.should == 'foobar'
-    end
-
-    it "knows it is using http auth" do
-      @client.basic_auth?.should be_true
-    end
-
-    it "knows it is not using token" do
-      @client.header_auth?.should be_false
-    end
-  end
-
   context "initializing with token" do
     before do
       @client = Gauges.new(:token => 'asdf')
@@ -30,14 +8,6 @@ describe Gauges do
 
     it "sets token" do
       @client.token.should == 'asdf'
-    end
-
-    it "knows it is using token" do
-      @client.header_auth?.should be_true
-    end
-
-    it "knows it is not using http auth" do
-      @client.basic_auth?.should be_false
     end
   end
 
@@ -74,21 +44,6 @@ describe Gauges do
     it "sets token header for request" do
       Gauges.should_receive(:get).with('/me', :headers => {
         'X-Gauges-Token' => 'asdf'
-      }, :query => {})
-      @client.me
-    end
-  end
-
-  context "making request with basic auth" do
-    before do
-      stub_get('https://secure.gaug.es/me', :me)
-      @client = Gauges.new(:email => 'john@orderedlist.com', :password => 'foobar')
-    end
-
-    it "sets basic auth option" do
-      Gauges.should_receive(:get).with('/me', :basic_auth => {
-        :username => 'john@orderedlist.com',
-        :password => 'foobar',
       }, :query => {})
       @client.me
     end
