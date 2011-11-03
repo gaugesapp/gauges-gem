@@ -775,4 +775,22 @@ describe Gauges do
       @response['urls']['next_page'].should     == nil
     end
   end
+
+  describe "#url" do
+    before do
+      url = 'https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/referrers?date=2011-11-01&page=2'
+      stub_get(url, :referrers)
+      @client   = Gauges.new(:token => 'asdf')
+      @response = @client.url(url)
+    end
+
+    it "returns 200" do
+      @response.code.should == 200
+    end
+
+    it "returns hash" do
+      @response.should be_an_instance_of(Hash)
+      @response['referrers'].size.should be(2)
+    end
+  end
 end

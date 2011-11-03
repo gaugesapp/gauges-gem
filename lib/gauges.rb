@@ -103,6 +103,11 @@ class Gauges
     @options[:token]
   end
 
+  def url(url)
+    host, *parts = url.gsub(/https?\:\/\//, '').split('/')
+    get("/#{parts.join('/')}")
+  end
+
 private
   def get(path, params={})
     self.class.get(path, options(:query => params))
