@@ -2,7 +2,20 @@
 
 Ruby gem that gives you easy access to the Gaug.es API.
 
-More coming soon, when it actually does something...
+== Usage
+
+  # List the titles of your gauges
+  client = Gauges.new(:token => '...')
+  client.gauges.each do |gauge|
+    puts gauge['title']
+  end
+
+  client.content(gauge_id)             # first page of top content
+  client.content(gauge_id, :page => 2) # second page of top content
+
+More examples in the examples directory of the repository.
+
+https://github.com/orderedlistinc/gauges-gem/tree/master/examples
 
 == Note on Patches/Pull Requests
 
