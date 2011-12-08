@@ -6,7 +6,7 @@ Ruby gem that gives you easy access to the Gaug.es API.
 
   # List the titles of your gauges
   client = Gauges.new(:token => '...')
-  client.gauges.each do |gauge|
+  client.gauges['gauges'].each do |gauge|
     puts gauge['title']
   end
 
