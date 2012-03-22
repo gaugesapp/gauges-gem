@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{Simple access to Gaug.es API}
   s.description = %q{Simple access to Gaug.es API}
 
-  s.add_dependency('httparty', '~> 0.7.8')
+  s.add_dependency('httparty', '~> 0.7')
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
