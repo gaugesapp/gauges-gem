@@ -88,7 +88,7 @@ class Gauges
   end
 
   def terms(id, params={})
-    get("/gauges/#{id}/terms")
+    get("/gauges/#{id}/terms", params)
   end
 
   def engines(id, params={})
