@@ -14,6 +14,8 @@ require 'bundler'
 
 Bundler.require(:test)
 
+MultiJson.engine = :yajl
+
 Logger.new(log_path.join('test.log')).tap do |log|
   LogBuddy.init(:logger => log)
 end
