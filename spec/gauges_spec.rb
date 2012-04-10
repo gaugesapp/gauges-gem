@@ -81,7 +81,7 @@ describe Gauges do
 
       client = @response['clients'].first
       client['key'].should          == '6c6b748646bb371a0027683cda32b7ff'
-      client['created_at'].should   == Time.utc(2011, 11, 2, 15, 17, 53)
+      client['created_at'].should   == '2011-11-02T15:17:53Z'
       client['description'].should  == 'HipChat'
       client['urls']['self'].should == 'https://secure.gaug.es/clients/6c6b748646bb371a0027683cda32b7ff'
     end
@@ -103,7 +103,7 @@ describe Gauges do
 
       @response['client']['key'].should         == '6c6b748646bb371a0027683cda32b7ff'
       @response['client']['description'].should == 'HipChat'
-      @response['client']['created_at'].should  == Time.utc(2011, 11, 2, 15, 17, 53)
+      @response['client']['created_at'].should  == '2011-11-02T15:17:53Z'
       @response['client']['urls']['self'].should == 'https://secure.gaug.es/clients/6c6b748646bb371a0027683cda32b7ff'
     end
   end
@@ -122,7 +122,7 @@ describe Gauges do
     it "returns client" do
       @response['client']['key'].should         == '6c6b748646bb371a0027683cda32b7ff'
       @response['client']['description'].should == 'HipChat'
-      @response['client']['created_at'].should  == Time.utc(2011, 11, 2, 15, 17, 53)
+      @response['client']['created_at'].should  == '2011-11-02T15:17:53Z'
       @response['client']['urls']['self'].should == 'https://secure.gaug.es/clients/6c6b748646bb371a0027683cda32b7ff'
     end
   end
@@ -175,7 +175,7 @@ describe Gauges do
       gauge['tz'].should            == 'Eastern Time (US & Canada)'
       gauge['id'].should            == '4d597dfd6bb4ba2c48000003'
       gauge['creator_id'].should    == '4df37acbe5947cabdd000001'
-      gauge['now_in_zone'].should   == Time.parse('Wed Nov 02 21:11:53 -0400 2011')
+      gauge['now_in_zone'].should   == '2011-11-02T21:11:53-04:00'
       gauge['enabled'].should       == true
 
       gauge['urls']["self"].should        == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003"
@@ -190,8 +190,8 @@ describe Gauges do
       gauge['urls']["traffic"].should     == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003/traffic"
 
       gauge['all_time'].should      == {"views" => 8259, "people" => 5349}
-      gauge['today'].should         == {"date" => Date.new(2011, 11, 2), "views" => 53, "people" => 29}
-      gauge['yesterday'].should     == {"date" => Date.new(2011, 11, 1), "views" => 137, "people" => 72}
+      gauge['today'].should         == {"date" => '2011-11-02', "views" => 53, "people" => 29}
+      gauge['yesterday'].should     == {"date" => '2011-11-01', "views" => 137, "people" => 72}
 
       gauge['recent_hours'].should  == [
         {"hour"=>"21", "views"=>0,  "people"=>0},
@@ -221,49 +221,49 @@ describe Gauges do
       ]
 
       gauge['recent_days'].should   == [
-        {"views" => 53,  "date" => Date.new(2011, 11, 02), "people" => 29},
-        {"views" => 137, "date" => Date.new(2011, 11, 01), "people" => 72},
-        {"views" => 154, "date" => Date.new(2011, 10, 31), "people" => 108},
-        {"views" => 70,  "date" => Date.new(2011, 10, 30), "people" => 39},
-        {"views" => 310, "date" => Date.new(2011, 10, 29), "people" => 186},
-        {"views" => 360, "date" => Date.new(2011, 10, 28), "people" => 233},
-        {"views" => 16,  "date" => Date.new(2011, 10, 27), "people" => 11},
-        {"views" => 17,  "date" => Date.new(2011, 10, 26), "people" => 12},
-        {"views" => 19,  "date" => Date.new(2011, 10, 25), "people" => 13},
-        {"views" => 10,  "date" => Date.new(2011, 10, 24), "people" => 9},
-        {"views" => 2,   "date" => Date.new(2011, 10, 23), "people" => 2},
-        {"views" => 6,   "date" => Date.new(2011, 10, 22), "people" => 6},
-        {"views" => 19,  "date" => Date.new(2011, 10, 21), "people" => 11},
-        {"views" => 65,  "date" => Date.new(2011, 10, 20), "people" => 49},
-        {"views" => 13,  "date" => Date.new(2011, 10, 19), "people" => 11},
-        {"views" => 8,   "date" => Date.new(2011, 10, 18), "people" => 5},
-        {"views" => 22,  "date" => Date.new(2011, 10, 17), "people" => 18},
-        {"views" => 24,  "date" => Date.new(2011, 10, 16), "people" => 16},
-        {"views" => 133, "date" => Date.new(2011, 10, 15), "people" => 113},
-        {"views" => 366, "date" => Date.new(2011, 10, 14), "people" => 335},
-        {"views" => 27,  "date" => Date.new(2011, 10, 13), "people" => 19},
-        {"views" => 19,  "date" => Date.new(2011, 10, 12), "people" => 13},
-        {"views" => 17,  "date" => Date.new(2011, 10, 11), "people" => 9},
-        {"views" => 80,  "date" => Date.new(2011, 10, 10), "people" => 46},
-        {"views" => 33,  "date" => Date.new(2011, 10, 9), "people" => 8},
-        {"views" => 20,  "date" => Date.new(2011, 10, 8), "people" => 9},
-        {"views" => 29,  "date" => Date.new(2011, 10, 7), "people" => 16},
-        {"views" => 143, "date" => Date.new(2011, 10, 6), "people" => 83},
-        {"views" => 29,  "date" => Date.new(2011, 10, 5), "people" => 24},
-        {"views" => 89,  "date" => Date.new(2011, 10, 4), "people" => 45}
+        {"views" => 53,  "date" => '2011-11-02', "people" => 29},
+        {"views" => 137, "date" => '2011-11-01', "people" => 72},
+        {"views" => 154, "date" => '2011-10-31', "people" => 108},
+        {"views" => 70,  "date" => '2011-10-30', "people" => 39},
+        {"views" => 310, "date" => '2011-10-29', "people" => 186},
+        {"views" => 360, "date" => '2011-10-28', "people" => 233},
+        {"views" => 16,  "date" => '2011-10-27', "people" => 11},
+        {"views" => 17,  "date" => '2011-10-26', "people" => 12},
+        {"views" => 19,  "date" => '2011-10-25', "people" => 13},
+        {"views" => 10,  "date" => '2011-10-24', "people" => 9},
+        {"views" => 2,   "date" => '2011-10-23', "people" => 2},
+        {"views" => 6,   "date" => '2011-10-22', "people" => 6},
+        {"views" => 19,  "date" => '2011-10-21', "people" => 11},
+        {"views" => 65,  "date" => '2011-10-20', "people" => 49},
+        {"views" => 13,  "date" => '2011-10-19', "people" => 11},
+        {"views" => 8,   "date" => '2011-10-18', "people" => 5},
+        {"views" => 22,  "date" => '2011-10-17', "people" => 18},
+        {"views" => 24,  "date" => '2011-10-16', "people" => 16},
+        {"views" => 133, "date" => '2011-10-15', "people" => 113},
+        {"views" => 366, "date" => '2011-10-14', "people" => 335},
+        {"views" => 27,  "date" => '2011-10-13', "people" => 19},
+        {"views" => 19,  "date" => '2011-10-12', "people" => 13},
+        {"views" => 17,  "date" => '2011-10-11', "people" => 9},
+        {"views" => 80,  "date" => '2011-10-10', "people" => 46},
+        {"views" => 33,  "date" => '2011-10-09', "people" => 8},
+        {"views" => 20,  "date" => '2011-10-08', "people" => 9},
+        {"views" => 29,  "date" => '2011-10-07', "people" => 16},
+        {"views" => 143, "date" => '2011-10-06', "people" => 83},
+        {"views" => 29,  "date" => '2011-10-05', "people" => 24},
+        {"views" => 89,  "date" => '2011-10-04', "people" => 45}
       ]
 
       gauge['recent_months'].should == [
-        {"views" => 190,  "date" => Date.new(2011, 11, 1), "people" => 82},
-        {"views" => 2452, "date" => Date.new(2011, 10, 1), "people" => 1517},
-        {"views" => 868,  "date" => Date.new(2011, 9, 1),  "people" => 488},
-        {"views" => 562,  "date" => Date.new(2011, 8, 1),  "people" => 269},
-        {"views" => 3287, "date" => Date.new(2011, 7, 1),  "people" => 2640},
-        {"views" => 224,  "date" => Date.new(2011, 6, 1),  "people" => 133},
-        {"views" => 143,  "date" => Date.new(2011, 5, 1),  "people" => 105},
-        {"views" => 86,   "date" => Date.new(2011, 4, 1),  "people" => 52},
-        {"views" => 367,  "date" => Date.new(2011, 3, 1),  "people" => 144},
-        {"views" => 80,   "date" => Date.new(2011, 2, 1),  "people" => 44}
+        {"views" => 190,  "date" => '2011-11-01', "people" => 82},
+        {"views" => 2452, "date" => '2011-10-01', "people" => 1517},
+        {"views" => 868,  "date" => '2011-09-01', "people" => 488},
+        {"views" => 562,  "date" => '2011-08-01', "people" => 269},
+        {"views" => 3287, "date" => '2011-07-01', "people" => 2640},
+        {"views" => 224,  "date" => '2011-06-01', "people" => 133},
+        {"views" => 143,  "date" => '2011-05-01', "people" => 105},
+        {"views" => 86,   "date" => '2011-04-01', "people" => 52},
+        {"views" => 367,  "date" => '2011-03-01', "people" => 144},
+        {"views" => 80,   "date" => '2011-02-01', "people" => 44}
       ]
     end
   end
@@ -288,7 +288,7 @@ describe Gauges do
         @response['gauge']['tz'].should            == 'Eastern Time (US & Canada)'
         @response['gauge']['id'].should            == '4eb1eaf5e5947c7408000001'
         @response['gauge']['creator_id'].should    == '4df37acbe5947cabdd000001'
-        @response['gauge']['now_in_zone'].should   == Time.parse('Wed Nov 02 21:14:29 -0400 2011')
+        @response['gauge']['now_in_zone'].should   == '2011-11-02T21:14:29-04:00'
         @response['gauge']['enabled'].should       == true
 
         @response['gauge']['urls']["self"].should        == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001"
@@ -345,7 +345,7 @@ describe Gauges do
         @response['gauge']['tz'].should            == 'Eastern Time (US & Canada)'
         @response['gauge']['id'].should            == '4d597dfd6bb4ba2c48000003'
         @response['gauge']['creator_id'].should    == '4df37acbe5947cabdd000001'
-        @response['gauge']['now_in_zone'].should   == Time.parse('Wed Nov 02 21:16:06 -0400 2011')
+        @response['gauge']['now_in_zone'].should   == '2011-11-02T21:16:06-04:00'
         @response['gauge']['enabled'].should       == true
 
         @response['gauge']['urls']["self"].should        == "https://secure.gaug.es/gauges/4d597dfd6bb4ba2c48000003"
@@ -395,7 +395,7 @@ describe Gauges do
       @response['gauge']['tz'].should            == 'Eastern Time (US & Canada)'
       @response['gauge']['id'].should            == '4eb1eaf5e5947c7408000001'
       @response['gauge']['creator_id'].should    == '4df37acbe5947cabdd000001'
-      @response['gauge']['now_in_zone'].should   == Time.parse('Wed Nov 02 21:18:12 -0400 2011')
+      @response['gauge']['now_in_zone'].should   == '2011-11-02T21:18:12-04:00'
       @response['gauge']['enabled'].should       == true
 
       @response['gauge']['urls']["self"].should        == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001"
@@ -427,7 +427,7 @@ describe Gauges do
       @response['gauge']['tz'].should            == 'Eastern Time (US & Canada)'
       @response['gauge']['id'].should            == '4eb1eaf5e5947c7408000001'
       @response['gauge']['creator_id'].should    == '4df37acbe5947cabdd000001'
-      @response['gauge']['now_in_zone'].should   == Time.parse('Wed Nov 02 21:19:08 -0400 2011')
+      @response['gauge']['now_in_zone'].should   == '2011-11-02T21:19:08-04:00'
       @response['gauge']['enabled'].should       == true
 
       @response['gauge']['urls']["self"].should        == "https://secure.gaug.es/gauges/4eb1eaf5e5947c7408000001"
@@ -613,7 +613,7 @@ describe Gauges do
       @response['traffic'].size.should be(2)
 
       item = @response['traffic'].first
-      item['date'].should   == Date.parse('2011-11-1')
+      item['date'].should   == '2011-11-01'
       item['views'].should  == 137
       item['people'].should == 72
 
