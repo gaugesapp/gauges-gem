@@ -15,7 +15,7 @@ Ruby gem that gives you easy access to the Gaug.es API.
 
 More examples in the examples directory of the repository.
 
-https://github.com/orderedlistinc/gauges-gem/tree/master/examples
+https://github.com/fastestforward/gauges-gem/tree/master/examples
 
 == Note on Patches/Pull Requests
 
